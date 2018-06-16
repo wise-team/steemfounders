@@ -1,31 +1,10 @@
-doctype html
-html.no-js(lang='')
-  head
-    meta(charset='utf-8')
-    meta(http-equiv='x-ua-compatible', content='ie=edge')
-    title Position - Home One
-    meta(name='description', content='')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    link(rel='shortcut icon', type='image/png', href='/images/favicon.png')
-    link(rel='stylesheet', href='/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/css/animate.css')
-    link(rel='stylesheet', href='/css/owl.carousel.css')
-    link(rel='stylesheet', href='/css/font-awesome.min.css')
-    link(rel='stylesheet', href='/css/magnific-popup.css')
-    link(rel='stylesheet', href='/css/slicknav.min.css')
-    link(rel='stylesheet', href='/css/flaticon.css')
-    link(rel='stylesheet', href='/css/styles.css')
-    link(rel='stylesheet', href='/css/responsive.css')
-    script(src='/js/vendor/modernizr-2.8.3.min.js')
+extends website.pug
+
+block header
+  title Steemfounders
+
+block body
   body
-    //if lt IE 8
-      p.browserupgrade
-        | You are using an 
-        strong outdated
-        |  browser. Please 
-        a(href='http://browsehappy.com/') upgrade your browser
-        |  to improve your experience.
-    // header-area start
     header.header-area
       .header-bottom
         .container
@@ -50,8 +29,8 @@ html.no-js(lang='')
                 button(type='button', name='button') Login and check
             .col-sm-1.clear.col-xs-3.hidden-md.hidden-lg
               .responsive-menu-wrap.floatright
-    // header-area end
-    // slider-area start
+
+
     .hero-area
       .particleground
       .hero-items
@@ -70,8 +49,7 @@ html.no-js(lang='')
                     i.fa.fa-long-arrow-right
             .col-md-6.text-right.hidden-sm.hidden-xs
               img(src='http://irsfoundation.com/tf/html/position-preview/position/assets/images/hero-img.png', alt='')
-    // slider-area end
-    // service-area start
+
     .pricing-table-area
       .container
         .row
@@ -171,8 +149,7 @@ html.no-js(lang='')
                 p
                   | Increase number backlinks and inbound another seo tam mobile search surpassed was reported that google.
                 a(href='#') Read on Steemit
-    // expert-area end
-    // pricing-table-area start
+
     #introduce.pricing-table-area
       .container
         .row
@@ -187,89 +164,6 @@ html.no-js(lang='')
               form(action='#')
                 input(type='text', placeholder='Your email here')
                 button(type='button', name='button') Send activation link
-    // pricing-table-area end
-    footer.footer-area
-      .footer-top
-        .container
-          .row
-            .col-md-4.col-sm-6.col-xs-12
-              .footer-widget.footer-logo
-                img(src='/images/logo-footer.png', alt='')
-                p
-                  | Supporting Steem community is our goal and we are going to do everything we can to make it growing with quality accounts.
-                //
-                  <ul>
-                  <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="#"><i class="fa fa-skype"></i></a></li>
-                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                  <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                  </ul>
-            .col-md-2.col-sm-6.col-xs-12
-              .footer-widget.footer-menu
-                h2 Important Link
-                ul
-                  li
-                    a(href='#') Home Page
-                  li
-                    a(href='#') Steemit
-                  // <li><a href="#">Our Services</a></li>
-                  li
-                    a(href='#') Contact Us
-            .col-md-2.col-md-offset-1.col-sm-6.col-xs-12
-              .footer-widget.footer-menu
-                h2 Our Partners
-                ul
-                  li
-                    a(href='#') Steemit Inc
-                  li
-                    a(href='#') Curie
-                  li
-                    a(href='#') SteemSTEM
-            .col-md-2.col-md-offset-1.col-sm-6.col-xs-12
-              .footer-widget.footer-menu
-                h2 Support Us
-                ul
-                  li
-                    a(href='#') Send SBD
-                  li
-                    a(href='#') Send STEEM
-                  li
-                    a(href='#') Delegate some SP
-                  // <li><a href="#">Feeds</a></li>
-      .footer-bottom
-        .container
-          .row
-            .col-xs-12
-              .copyright.text-right
-                p
-                  | Copyright 
-                  span 2018
-                  | . All Right Reserved
-    // all js here
-    // jquery latest version
-    script(src='/js/vendor/jquery-1.12.4.min.js')
-    // bootstrap js
-    script(src='/js/bootstrap.min.js')
-    // owl.carousel.2.0.0-beta.2.4 css
-    script(src='/js/owl.carousel.min.js')
-    // counterup.main.js
-    script(src='/js/counterup.main.js')
-    // isotope.pkgd.min.js
-    script(src='/js/imagesloaded.pkgd.min.js')
-    // isotope.pkgd.min.js
-    script(src='/js/isotope.pkgd.min.js')
-    // jquery.waypoints.min.js
-    script(src='/js/jquery.waypoints.min.js')
-    // jquery.slicknav.min.js
-    script(src='/js/jquery.slicknav.min.js')
-    // jquery.magnific-popup.min.js
-    script(src='/js/jquery.magnific-popup.min.js')
-    // jquery.particleground.min.js
-    script(src='/js/jquery.particleground.min.js')
-    // wow js
-    script(src='/js/wow.min.js')
-    // plugins js
-    script(src='/js/plugins.js')
-    // main js
-    script(src='/js/scripts.js')
+    
+    block footer
+      include partials/footer.pug
