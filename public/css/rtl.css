@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css?family=Lateef&subset=arabic');
+
+body {
+	font-family: 'Lateef', cursive;
+    font-size: 16px;
+	line-height:24px;
+}
+.floatright{
+	float:left;
+}
+.floatleft{
+	float:right;
+}
+.headet-top-info.text-right {
+    text-align: left;
+}
+
+.headet-top-info ul li{
+    font-size: 14px;
+}
+.mainmenu ul li{
+	margin:0px 0px 0px 35px;
+}
+.mainmenu ul li > ul.submenu {
+    left: auto;
+	text-align:right;
+	right:0;
+}
+.logo {
+    text-align: right;
+}
+/*---------------------------- responsiv-area start --------------------------*/
+
+.responsive-menu-wrap .slicknav_btn {
+	float: left;
+}
+.responsive-menu-wrap .slicknav_menu {
+	right: auto;
+	left: 0;
+}
+.hero-items ul li a i{
+	margin:0px 5px 0px 0px;
+}
+.particleground {
+    left: auto;
+    right: 0;
+}
+.quote-area::before{
+    left: auto;
+    right: -10px;
+}
+.quote-wrap p {
+	padding:0px 65px 0px 0px;
+}
+.quote-wrap p::before{
+    left: auto;
+    right: 0;
+}
+.quote-area .particleground{
+    left: 0;
+    right: auto;
+}
+.testmonial-wrap {
+    margin: 20px 20px 0px 0px;
+    padding: 50px 130px 50px 20px;
+}
+.testmonial-wrap::before{
+    left: auto;
+    right: 30px;
+}
+.testmonial-wrap::after{
+    left: 0;
+    right: auto;
+}
+.testminial-img{
+    left: auto;
+    right: -20px;
+}
+.testmonial-content span{
+    font-size: 15px;
+}
+.brand-active::before{
+    right:-105px;
+    left:auto;
+}
+
+.newsletter-area::before{
+    left: -10px;
+    right: auto;
+}
+.newsletter-wrap input{
+    padding: 0px 25px 0px 180px;
+}
+.newsletter-wrap button{
+    right: auto;
+    left: 0;
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+	border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.next-prev-style .owl-nav div {
+    line-height: 45px;
+}
+.footer-logo p{
+	padding:0px 0px 0px 50px;
+}
+.footer-logo ul li {
+	margin:0px 0px 0px 5px;
+}
+
+.footer-bottom::before{
+    left: auto;
+    right: 0;
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+	border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.slider-items::before{
+    left: auto;
+    right: 0;
+}
+.slider-content{
+    right: 0;
+    left: auto;
+}
+.slider-content ul li{
+	margin:0px 0px 0px 5px;
+}
+
+.about-wrap ul li{
+	padding:0px 25px 0px 0px;
+}
+.about-wrap ul li::before{
+    right: 0;
+    left: auto;
+}
+.fanfact-area2::before{
+    right: 0;
+    left: auto;
+}
+
+.about-page-content{
+    right: auto;
+    left: 0;
+}
+.about-page-content a{
+	margin:0px 0px 0px 15px;
+}
+.about-info {
+    padding: 5px 0px 5px 30px;
+}
+
+.service-contact{
+	padding:0px 40px 0px 0px;
+}
+.service-contact h3::before{
+    left: auto;
+	right:0;
+}
+.service-contact-icon{
+    float: right;
+}
+.service-contact-info{
+	margin:0px 100px 0px 0px;
+}
+
+.blog-details-wrap ul li{
+	margin:0px 0px 0px 5px;
+}
+.comment-theme{
+	float:right;
+}
+.comment-main-area {
+	margin:0px 150px 0px 0px;
+}
+.comment-wrap1 {
+	margin:0px 70px 0px 0px;
+}
+.comment-wrap2{
+	margin:0px 84px 0px 0px;
+}
+.sewl-form-inputs input,.sewl-form-textarea textarea{
+	padding:0px 20px 0px 0px;
+}
+.blog-siderbar-area{
+	padding:0px 40px 0px 0px;
+}
+.category-wrap ul li a{
+	padding:0px 35px 0px 0px;
+}
+.category-wrap ul li a::before{
+    left: auto;
+	right:0px;
+}
+.search-form input{
+    padding: 0px 20px 0px 50px;
+}
+.search-form button{
+    right: auto;
+	left:0;
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+	border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.brand-wrap::before{
+    left: auto;
+	right:0;
+}
+aside.blog-siderbar-area.left-sidebar {
+    padding: 0px 0px 0px 40px;
+}
+.contact-wrap input,.contact-wrap textarea{
+	padding:0px 20px 0px 0px;
+}
+.error-wrap input{
+	padding:0px 20px 0px 0px;
+}
+.error-wrap button{
+    right: auto;
+	left:0;
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+	border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.copyright.text-right {
+    text-align: left;
+}
+.slicknav_menu .slicknav_icon {
+    margin: 2px 18px;
+}
+
+.category-wrap ul li a::before {
+    content: "\f177";
+}
+
+.mb-50 {
+    margin-bottom: 50px;
+}

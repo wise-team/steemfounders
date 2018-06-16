@@ -1,0 +1,74 @@
+/* (1366x768) WXGA Display */
+@media  screen and (min-width: 1366px) and (max-width: 1919px) {
+
+}
+
+/* Normal desktop :992px. */
+@media (min-width: 992px) and (max-width: 1197px) {
+    .mainmenu ul li {
+		margin:0px 0px 0px 25px;
+    }
+    .brand-active::before {
+        left: auto;
+		right:-80px;
+    }
+    .service-contact {
+		padding-right:0px;
+    }
+    .service-contact-info {
+		margin:0px 85px 0px 0px;
+    }
+}
+/* Normal desktop :991px. */
+@media (min-width: 768px) and (max-width: 991px) {
+	
+    .testmonial-wrap::before {
+        left: 30px;
+        right: auto;
+    }
+    .blog-siderbar-area {
+		padding-right:0px;
+    }
+}
+
+/* small mobile :320px. */
+@media (max-width: 767px) {
+    .container{width: 100%}
+    .testmonial-wrap::before {
+        top: auto;
+        content: "\f10e";
+        bottom: 30px;
+        left: 30px;
+        right: auto;
+    }
+    
+    .newsletter-wrap input {
+        padding: 0px 10px 0px 100px;
+    }
+    
+    .service-contact {
+		padding-right:0px;
+    }
+    .blog-siderbar-area {
+		padding-right:0px;
+    }
+    .comment-main-area {
+        margin-right: 0;
+    }
+    
+    .comment-wrap1 {
+        margin-left: 0px;
+        margin-right: 15px;
+    }
+}
+/* small mobile :320px. */
+@media  (min-width: 600px) and (max-width: 767px) {
+    .container{width:100%}
+
+}
+
+/* Large Mobile :480px. */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+.container {width:100%}
+
+}
