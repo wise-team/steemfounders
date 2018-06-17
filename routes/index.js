@@ -289,4 +289,14 @@ router.get('/validate', (req, res) => {
 
 })
 
+router.get('/logout', (req, res) => {
+    req.session.email = null;
+    req.session.moderator = null;
+    res.redirect('/');
+});
+
+router.get('*', (req, res) => {
+    res.redirect('/');
+});
+
 module.exports = router;
