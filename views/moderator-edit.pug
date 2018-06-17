@@ -1,0 +1,49 @@
+extends website.pug
+
+block header
+  title Edit and publish - Steemfounders
+
+append stylesheets
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css')
+append scripts
+    script(src='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js')
+    script(src='/js/moderator-edit.js')
+
+block body
+    include partials/navbar.pug
+
+    .breadcumb-area
+        .particleground
+        .container
+            .row
+                .col-xs-12
+                    .breadcumb-wrap.text-center
+                        h2 Edit and publish
+
+    .contact-area.pt-100
+        .container
+            .row
+                .col-md-12.col-xs-12
+                    .contact-wrap
+                        form#post(action='/publish', method='POST')
+                            input#_id(type='hidden', name='_id', value=post._id)
+                            .row
+                                .col-xs-12.col-sm-8
+                                    label Post title:
+                                    input#post-title(type='text', name='title', required="", placeholder='Title...', value= post.title)
+                                .col-xs-12.col-sm-12
+                                    label Post body:
+                                    textarea#post-body(type='text', name='body', required='', placeholder='Body...')= post.body
+                                .col-xs-12.col-sm-12
+                                    label Thumbnail URL (optional):
+                                    input#post-title(type='text', name='image', placeholder='https://...', value= post.image)
+                                .col-xs-12.col-sm-12
+                                    label New user interests (readonly):
+                                    input#post-interests(type='text', name='tags', required="", readonly='', value= post.tags)
+                                
+                                .col-xs-12.col-sm-12
+                                    label Steem tags for new post:
+                                    input#post-title(type='text', name='tags', required="", placeholder='first second ...')
+                                .col-xs-12
+                                    //- button#submit.cont-submit.btn-contact(type='submit') 
+                                    button#submit.cont-submit.btn-contact(type='submit') Publish

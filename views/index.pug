@@ -2,33 +2,27 @@ extends website.pug
 
 block header
   title Steemfounders
+  
+append scripts
+    script(src='/js/main.js')
 
 block body
+  #login-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true', style='display: none;')
+    .modal-dialog
+      .loginmodal-container
+        h1 Login to Your Account
+        br
+        form(method="POST", action="/login")
+          input(type='email', name='email', placeholder='E-mail')
+          input(type='password', name='password', placeholder='Password')
+          input.login.loginmodal-submit(type='submit', name='login', value='Login')
+        .login-help
+          a(href='/#introduce') Register
+          |  - 
+          a(href='#') Forgot Password
+
   body
-    header.header-area
-      .header-bottom
-        .container
-          .row
-            .col-md-2.col-sm-8.col-xs-12
-              .logo
-                a(href='/')
-                  img(src='/images/logo-white.png', alt='')
-            .col-md-8.hidden-sm.hidden-xs
-              .mainmenu.text-right
-                ul#navigation
-                  li
-                    a(href='/') Home
-                  li
-                    a(href='#') About Steem
-                  li
-                    a(href='#') About us
-                  li
-                    a(href='#') Contact
-            .col-md-2.col-sm-3.col-xs-9
-              .free-seo.text-right
-                button(type='button', name='button') Login and check
-            .col-sm-1.clear.col-xs-3.hidden-md.hidden-lg
-              .responsive-menu-wrap.floatright
+    include partials/navbar.pug
 
 
     .hero-area
@@ -103,15 +97,15 @@ block body
         .row
           .col-md-4.col-sm-4.col-xs-12
             .fanfact-wrap
-              h2.counter 15
+              h2.counter= account_number
               p Accounts funded
           .col-md-4.col-sm-4.col-xs-12
             .fanfact-wrap
-              h2.counter 42
+              h2.counter= steem_transfered
               p STEEM tokens transfered
           .col-md-4.col-sm-4.col-xs-12
             .fanfact-wrap
-              h2.counter 55
+              h2.counter= sbd_transfered
               p SBD tokens transfered
     // fanfact-area end
     // expert-area start
@@ -161,9 +155,9 @@ block body
         .row
           .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-2.col-xs-12
             .newsletter-wrap
-              form(action='#')
-                input(type='text', placeholder='Your email here')
-                button(type='button', name='button') Send activation link
+              form#register
+                input(type='email', placeholder='Your email here', name='email')
+                button(type='submit', name='button') Send activation link
     
     block footer
       include partials/footer.pug

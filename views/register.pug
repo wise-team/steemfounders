@@ -1,0 +1,38 @@
+extends website.pug
+
+block header
+  title Register - Steemfounders
+
+append scripts
+    script(src='/js/main.js')
+
+block body
+    include partials/navbar.pug
+
+    .breadcumb-area
+        .particleground
+        .container
+            .row
+                .col-xs-12
+                    .breadcumb-wrap.text-center
+                        h2 Finish registration
+
+    // contact-area start
+    .contact-area.pt-100
+        .container
+            .row
+                .col-md-12.col-xs-12
+                    .contact-wrap
+                        h3 Finish registration
+                        .cf-msg
+                        form#rf(action='/finish', method='POST')
+                            .row
+                                .col-xs-12.col-sm-6
+                                    input#password(type='password', required="" name='password', placeholder='Password')
+                                .col-xs-12.col-sm-6
+                                    input#passwordConf(type='password', name='passwordConf', required='', data-parsley-equalto="#password", placeholder='Retype password')
+                                .col-xs-12.col-sm-12
+                                    input#account(type='text', name='account', placeholder='Preffered Steem account name')
+                                    p#info
+                                .col-xs-12
+                                    button#submit.cont-submit.btn-contact(name='submit') Let's start

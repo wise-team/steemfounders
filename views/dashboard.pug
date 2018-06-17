@@ -1,0 +1,64 @@
+extends website.pug
+
+block header
+  title Dashboard - Steemfounders
+
+append stylesheets
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css')
+append scripts
+    script(src='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js')
+    script(src='/js/write.js')
+
+block body
+    include partials/navbar.pug
+
+    .breadcumb-area
+        .particleground
+        .container
+            .row
+                .col-xs-12
+                    .breadcumb-wrap.text-center
+                        h2 Hello, #{email}
+
+    .contact-area.pt-100
+        .container
+            .row
+                .col-md-12.col-xs-12
+                    .contact-wrap
+                        if ! post
+                            h3 Write your #intruduceyourself post
+                            .cf-msg
+                            form#post(action='/add', method='POST')
+                                .row
+                                    .col-xs-12.col-sm-8
+                                        label You post title:
+                                        input#post-title(type='text', name='title', required="", placeholder='Title...')
+                                    .col-xs-12.col-sm-12
+                                        label Post body:
+                                        textarea#post-body(type='text', name='body', required='', placeholder='Body...')
+                                    .col-xs-12.col-sm-12
+                                        label Thumbnail URL (optional):
+                                        input#post-title(type='text', name='image', placeholder='https://...')
+                                    .col-xs-12.col-sm-12
+                                        label You interests (as tags):
+                                        input#post-title(type='text', name='tags', required="", placeholder='first second ...')
+                                    .col-xs-12
+                                        button#submit.cont-submit.btn-contact(name='submit') Submit
+                        else
+                            h3 You successfully submitted your post. Wait for information from our moderators :)
+                            .row.pt-100
+                                .col-md-5.col-xs-12.hidden-xs.hidden-sm
+                                    .case-details-img
+                                        if post.image
+                                            img.post-thumbnail(src=post.image, alt='')
+                                        else
+                                            img.post-thumbnail(src='/images/case/case-details2.png', alt='')
+                                .col-md-6.col-md-offset-1.col-xs-12
+                                    .case-details-wrap
+                                        h2= post.title
+                                        p= post.body.substring(200,0) + '...'
+    block footer
+        .contact-area.pt-100
+            .contact-area.pt-100
+                .contact-area.pt-100
+                    include partials/footer.pug

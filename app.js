@@ -27,6 +27,12 @@ app.use(session({
     resave: false
 }));
 
+app.use((req, res, next) => {
+    res.locals.email = req.session.email;
+    res.locals.moderator = req.session.moderator;
+    next();
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

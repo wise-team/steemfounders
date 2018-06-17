@@ -1,0 +1,48 @@
+extends website.pug
+
+block header
+  title Moderator panel - Steemfounders
+
+
+block body
+    include partials/navbar.pug
+
+    .breadcumb-area
+        .particleground
+        .container
+            .row
+                .col-xs-12
+                    .breadcumb-wrap.text-center
+                        h2 Moderator panel
+    .contact-area.pt-100
+        .container
+            .row
+                .col-md-12.col-xs-12
+                    .contact-wrap
+                        each post in posts
+                            .row.pt-100
+                                .col-md-5.col-xs-12.hidden-xs.hidden-sm
+                                    .case-details-img
+                                        if post.image
+                                            img.post-thumbnail(src=post.image, alt='')
+                                        else
+                                            img.post-thumbnail(src='/images/case/case-details2.png', alt='')
+                                .col-md-5.col-xs-12
+                                    .case-details-wrap
+                                        h2= post.title
+                                        p= post.body.substring(200,0) + '...'
+                                        each tag in post.tags.split(' ')
+                                            span.badge.badge-light= tag
+                                        
+                                .col-md-2.col-xs-12
+                                    .btn-group-vertical(role='group', aria-label='Basic example')
+                                        a(href='/edit/' + post._id)
+                                            button.btn.btn-success(type='button') Edit and publish
+                                        button.btn.btn-danger(type='button') Reject
+                                        button.btn.btn-success(type='button') Create account
+
+    block footer
+        .contact-area.pt-100
+            .contact-area.pt-100
+                .contact-area.pt-100
+                    include partials/footer.pug

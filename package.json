@@ -30,7 +30,11 @@
     "wykop-es6": "latest",
     "dotenv": "latest",
     "sitemap": "latest",
-    "express-dynamic-static": "latest"
+    "express-dynamic-static": "latest",
+    "email-verification": "latest",
+    "bcrypt": "latest",
+    "nodemailer": "latest",
+    "nodemailer-mailgun-transport": "latest"
   },
   "devDependencies": {},
   "scripts": {
