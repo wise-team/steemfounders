@@ -296,6 +296,36 @@ router.get('/validate', (req, res) => {
 
 })
 
+router.post('/resend', (req, res) => {
+    if(req.body.email && req.body.email != '') {
+        Users.findOne({email: req.body.email}, function(err, user) {
+            if(!err && user) {
+                var link = process.env.WEBSITE_URL + '/validate?email=' + user.email + '&token=' + user.token;
+                nodemailerMailgun.sendMail({
+                    from: 'noreplay@steemfounders.com',
+                    to: req.body.email, // An array if you have multiple recipients.
+                    subject: 'Please confirm your Email account',
+                    html: 'Hello,<br>Please Click on the link to verify your email.<br><br><a href=' + link + '>Click here to verify</a><br><br>Steemfounders Team',
+                  }, function (err, info) {
+                    if (err) {
+                        console.log('Error: ' + err);
+                        res.json({ error: "Error occured. Try again" });
+                    }
+                    else {
+                        res.json({ success: "Activation link resent. Delivery can take few minutes." });
+                        console.log('Response: ' + JSON.stringify(info, null, 10));
+                    }
+                  });
+            } else {
+                res.json({ error: "Error occured. Try again" });
+            }
+        })
+    } else {
+        res.json({ error: "Error occured. Try again" });
+    }
+ 
+});
+
 router.get('/logout', (req, res) => {
     req.session.email = null;
     req.session.verified = null;

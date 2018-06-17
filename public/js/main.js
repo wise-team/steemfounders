@@ -44,17 +44,55 @@ $(document).ready(function () {
             });
     });
 
-    $('#resend').on('click', function(e) {
-        $.notify({
-            icon: "nc-icon nc-send",
-            message: "OKOK"          
-        }, {
-            type: 'success',
-            timer: 8000,
-            spacing: 15,
-            placement: {
-                from: 'top',
-                align: 'right'
+    $('body').on('click', '#resend', function(e) {
+
+        $.ajax({
+            type: "POST",
+            url: "/resend",
+            data: {"email": $('#new-mail').val()},
+            success: function (data) {
+                if(data.success) {
+                    $.notify({
+                        icon: "nc-icon nc-send",
+                        message: data.success          
+                    }, {
+                        type: 'success',
+                        timer: 8000,
+                        spacing: 15,
+                        placement: {
+                            from: 'top',
+                            align: 'right'
+                        }
+                    });
+                } else {
+                    $.notify({
+                        icon: "nc-icon nc-send",
+                        message: data.error          
+                    }, {
+                        type: 'danger',
+                        timer: 8000,
+                        spacing: 15,
+                        placement: {
+                            from: 'top',
+                            align: 'right'
+                        }
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                $.notify({
+                    icon: "nc-icon nc-fav-remove",
+                    message: data.error            
+                }, {
+                    type: 'danger',
+                    timer: 8000,
+                    spacing: 15,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
             }
         });
     })
