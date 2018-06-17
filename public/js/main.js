@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     var specificField = $('#account').parsley();
-    
+
     $.event.special.inputchange = {
         setup: function() {
             var self = this, val;
@@ -43,6 +43,21 @@ $(document).ready(function () {
                 }
             });
     });
+
+    $('#resend').on('click', function(e) {
+        $.notify({
+            icon: "nc-icon nc-send",
+            message: "OKOK"          
+        }, {
+            type: 'success',
+            timer: 8000,
+            spacing: 15,
+            placement: {
+                from: 'top',
+                align: 'right'
+            }
+        });
+    })
 
     let inProgress = false;
 

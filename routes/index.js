@@ -13,8 +13,8 @@ let Posts = require('../models/posts.js');
 // This is your API key that you retrieve from www.mailgun.com/cp (free up to 10K monthly emails)
 var auth = {
     auth: {
-      api_key: 'a0f9ca9244ae15b27c0e49fee481d8ca-47317c98-8ddfd3d7',
-      domain: 'sandboxa2e798c462cf4306ae0d093fa8d2fc15.mailgun.org'
+      api_key: process.env.MAILGUN_API_KEY,
+      domain: process.env.MAILGUN_DOMAIN
     }
   }
   
@@ -37,18 +37,21 @@ router.get('/', (req, res, next) => {
 
 router.get('/dashboard', (req, res, next) => {
     if (req.session.email) {
-
-        if(req.session.moderator) {
-            res.redirect('/moderate');
+        if(!req.session.verified) {
+            res.redirect('/register');
         } else {
-            Posts.findOne({ email: req.session.email }, function (err, post) {
-                if (!err) {
-                    res.render('dashboard', { post: post });
-                } else {
-                    res.redirect('/');
-                }
-            })
-        }        
+            if(req.session.moderator) {
+                res.redirect('/moderate');
+            } else {
+                Posts.findOne({ email: req.session.email }, function (err, post) {
+                    if (!err) {
+                        res.render('dashboard', { post: post });
+                    } else {
+                        res.redirect('/');
+                    }
+                })
+            }  
+        }             
     } else {
         res.redirect('/');
     }
@@ -85,7 +88,11 @@ router.get('/moderate', (req, res, next) => {
 
 router.get('/register', (req, res) => {
     if (req.session.email) {
-        res.render('register');
+        if(!req.session.verified) {
+            res.render('register');
+        } else {
+            res.redirect('/dashboard');    
+        }
     } else {
         res.redirect('/');
     }
@@ -128,7 +135,7 @@ router.post('/register', (req, res) => {
                     }
                 })
             } else {
-                res.json({ error: "Activation link already sent. Click <a href>here</a> to resend" });
+                res.json({ error: "Activation link already sent. Click <a id='resend'>here</a> to resend" });
             }
         })
     }
@@ -137,7 +144,6 @@ router.post('/register', (req, res) => {
 router.post('/finish', (req, res) => {
 
     if (req.body.password && req.body.password != '' && req.body.passwordConf && req.body.passwordConf != '' && req.body.account && req.body.account != '') {
-        console.log(req.body.password);
         Users.findOne({ email: req.session.email }, function (err, user) {
             if (!err && user) {
                 bcrypt.hash(req.body.password, 10, function (err, hash) {
@@ -238,12 +244,12 @@ router.post('/add', (req, res) => {
 router.post('/login', (req, res) => {
 
     if (req.body.password && req.body.password != '' && req.body.email && req.body.email != '') {
-        console.log(req.body.password, req.body.email);
         Users.findOne({ email: req.body.email }, function (err, user) {
             if (!err && user) {
                 bcrypt.compare(req.body.password, user.hash, function (err, result) {
                     if (!err && result) {
-                        req.session.email = req.body.email;
+                        req.session.email = user.email;
+                        req.session.verified = user.verified;
                         if(user.moderator) {
                             req.session.moderator = true;
                         }
@@ -267,6 +273,7 @@ router.get('/validate', (req, res) => {
                     if (user.token == req.query.token) {
 
                         req.session.email = user.email;
+                        req.session.verified = user.verified;
 
                         user.activated = true;
                         user.save((err) => {
@@ -291,6 +298,7 @@ router.get('/validate', (req, res) => {
 
 router.get('/logout', (req, res) => {
     req.session.email = null;
+    req.session.verified = null;
     req.session.moderator = null;
     res.redirect('/');
 });
