@@ -32,10 +32,8 @@ $(document).ready(function () {
                     console.log(data);
                     window.ParsleyUI.removeError(specificField, "myCustomError");
                     if(data.success) {
-                        // $('#info').text(data.success);
                     } else {
                         window.ParsleyUI.addError(specificField, "myCustomError", data.error);
-                        // $('#info').text(data.error);
                     }
                 },
                 error: function (data) {

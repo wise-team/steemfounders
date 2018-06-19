@@ -2,34 +2,13 @@ let express = require('express');
 let router = express.Router();
 var bcrypt = require('bcrypt');
 var steem = require('steem');
+var getSlug = require('speakingurl');
 let getUrls = require('get-urls');
 const isImage = require('is-image');
-var nodemailer = require('nodemailer');
-var mg = require('nodemailer-mailgun-transport');
 
 let Users = require('../models/users.js');
 let Posts = require('../models/posts.js');
-
-// This is your API key that you retrieve from www.mailgun.com/cp (free up to 10K monthly emails)
-var auth = {
-    auth: {
-      api_key: process.env.MAILGUN_API_KEY,
-      domain: process.env.MAILGUN_DOMAIN
-    }
-  }
-  
-var nodemailerMailgun = nodemailer.createTransport(mg(auth));
-
-
-function generateToken() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (var i = 0; i < 36; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-}
+let utils = require('../modules/utils.js');
 
 router.get('/', (req, res, next) => {
     res.render('index', { account_number: 15, steem_transfered: 54, sbd_transfered: 23 });
@@ -106,32 +85,23 @@ router.post('/register', (req, res) => {
             if (!err && !user) {
                 let user = new Users();
                 user.email = req.body.email;
-                user.token = generateToken();
-
-                var link = process.env.WEBSITE_URL + '/validate?email=' + user.email + '&token=' + user.token;
-
-                console.log(link);
+                user.token = utils.generateToken();
 
                 user.save((err) => {
                     if (err) {
                         console.log(err);
                         res.json({ error: "Something went wrong. Try again" });
                     } else {
-                        nodemailerMailgun.sendMail({
-                            from: 'noreplay@steemfounders.com',
-                            to: user.email, // An array if you have multiple recipients.
-                            subject: 'Please confirm your Email account',
-                            html: 'Hello,<br>Please Click on the link to verify your email.<br><br><a href=' + link + '>Click here to verify</a><br><br>Steemfounders Team',
-                          }, function (err, info) {
+                        utils.sendActivationEmail(user.email, user.token, function(err, info){
                             if (err) {
                                 console.log('Error: ' + err);
                                 res.json({ error: "Error occured. Try again" });
                             }
                             else {
-                                res.json({ success: "Activation link sent" });
                                 console.log('Response: ' + JSON.stringify(info, null, 10));
+                                res.json({ success: "Activation link sent" });
                             }
-                          });
+                        })
                     }
                 })
             } else {
@@ -225,6 +195,17 @@ router.post('/add', (req, res) => {
                     post.image = image;
                     
                     post.save((err)=>{
+
+                        Users.find({moderator: true}, (err, users) => {
+                            if(!err && users.length) {
+                                users.forEach((user)=>{
+                                    utils.moderatorInformAboutNewPost(user.email,(err, info) => console.log(err, info));
+                                })
+                            } else {
+                                console.log("No moderators found. We're not sending emails");
+                            }
+                        })
+
                         res.redirect('/dashboard');
                     })
                     
@@ -237,6 +218,66 @@ router.post('/add', (req, res) => {
         }
     } else {
         res.redirect('/');
+    }
+
+});
+
+router.post('/publish', (req, res) => {
+    if(req.session.email && req.session.moderator) {
+        if (req.body.title && req.body.title != '' && req.body.body && req.body.body != '' && req.body.tags && req.body.tags != '' && req.body._id && req.body._id != '') {
+            Posts.findById(req.body._id, function (err, post) {
+                if (!err) {
+                    if(post) {
+                        post.title = req.body.title;
+                        post.body = req.body.body;
+                        post.tags = req.body.tags;
+                        post.status = 'published';
+
+                        let image = req.body.image;
+                        
+                        if ( ! image || (image == '')) {
+                            var urls = getUrls(req.body.body);
+                            urls.forEach((url) => {
+                                if ( ! image || (image == '')) {
+                                    if (url[url.length - 1] == ')') {
+                                        var trimmed = url.substring(0, url.length - 1);
+                                    } else {
+                                        var trimmed = url;
+                                    }
+            
+                                    if (isImage(trimmed)) {
+                                        image = trimmed;
+                                    }
+                                }
+                            });
+                        }
+
+                        post.image = image;
+                        
+                        post.permlink = getSlug(post.title) + '-' + new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
+
+                        utils.publishPostOnSteem(post, function(err, result) {
+                            if(!err) {
+                                post.save((err)=>{
+                                    utils.sendInformationAfterPostPublished(post.email, 'https://steemit.com/' + post.tags.split(' ')[0] + '/@' + process.env.STEEM_USERNAME + '/' + post.permlink, (err, info)=> {console.log(err, info)});
+                                    res.json({success: 'Post has been published'});
+                                })
+                            } else {
+                                res.json({error: 'Error while publishing on Steem. ' + err.message });
+                            }
+                        });
+                    } else {
+                        res.json({error: 'Post not found in database. Cannot be published'});
+                    }                    
+                } else {
+                    res.json({error: 'Error while connecting database'});
+                }
+            })
+        } else {
+            res.json({error: 'Post information incomplete. Provide all fields'});
+        }
+    } else {
+        res.json({error: 'Not authorized'});
     }
 
 });
@@ -300,22 +341,16 @@ router.post('/resend', (req, res) => {
     if(req.body.email && req.body.email != '') {
         Users.findOne({email: req.body.email}, function(err, user) {
             if(!err && user) {
-                var link = process.env.WEBSITE_URL + '/validate?email=' + user.email + '&token=' + user.token;
-                nodemailerMailgun.sendMail({
-                    from: 'noreplay@steemfounders.com',
-                    to: req.body.email, // An array if you have multiple recipients.
-                    subject: 'Please confirm your Email account',
-                    html: 'Hello,<br>Please Click on the link to verify your email.<br><br><a href=' + link + '>Click here to verify</a><br><br>Steemfounders Team',
-                  }, function (err, info) {
+                utils.sendActivationEmail(user.email, user.token, function(err, info){
                     if (err) {
                         console.log('Error: ' + err);
                         res.json({ error: "Error occured. Try again" });
                     }
                     else {
-                        res.json({ success: "Activation link resent. Delivery can take few minutes." });
                         console.log('Response: ' + JSON.stringify(info, null, 10));
+                        res.json({ success: "Activation link resent. Delivery can take few minutes." });
                     }
-                  });
+                });
             } else {
                 res.json({ error: "Error occured. Try again" });
             }
@@ -323,7 +358,6 @@ router.post('/resend', (req, res) => {
     } else {
         res.json({ error: "Error occured. Try again" });
     }
- 
 });
 
 router.get('/logout', (req, res) => {

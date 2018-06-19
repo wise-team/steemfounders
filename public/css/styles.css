@@ -1761,6 +1761,7 @@ aside.blog-siderbar-area.left-sidebar {
     border: none;
     font-size: 12px;
     border-radius: 3px;
+    margin: 5px;
 }
 .contact-wrap button:hover{
     background: #222;
@@ -1930,4 +1931,9 @@ aside.blog-siderbar-area.left-sidebar {
     width: 100%;
     height: 250px;
     object-fit: cover;
+}
+
+button[disabled] {
+    background: #afbfd0;
+    pointer-events: none;
 }

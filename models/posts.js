@@ -10,7 +10,8 @@ var postsSchema = new Schema({
     title: String,
     body: String,
     image: String,
-    tags: String
+    tags: String,
+    permlink: String
 });
 
 module.exports = mongoose.model('posts', postsSchema);

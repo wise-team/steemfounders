@@ -35,11 +35,11 @@ block body
                                             span.badge.badge-light= tag
                                         
                                 .col-md-2.col-xs-12
-                                    .btn-group-vertical(role='group', aria-label='Basic example')
+                                    .btn-group-vertical
                                         a(href='/edit/' + post._id)
                                             button.btn.btn-success(type='button') Edit and publish
-                                        button.btn.btn-danger(type='button') Reject
-                                        button.btn.btn-success(type='button') Create account
+                                        a(href='#' disabled=true)
+                                            button.btn.btn-danger(type='button' disabled=true) Reject
 
     block footer
         .contact-area.pt-100
