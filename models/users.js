@@ -9,7 +9,9 @@ var userSchema = new Schema({
     token: String,
     account: String,
     created: Boolean,
-    moderator: Boolean
+    moderator: Boolean,
+    steem_password: String,
+    steem_keys: Object
 });
 
 module.exports = mongoose.model('users', userSchema);

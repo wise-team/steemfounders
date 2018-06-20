@@ -7,20 +7,6 @@ append scripts
     script(src='/js/main.js')
 
 block body
-  #login-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true', style='display: none;')
-    .modal-dialog
-      .loginmodal-container
-        h1 Login to Your Account
-        br
-        form(method="POST", action="/login")
-          input(type='email', name='email', placeholder='E-mail')
-          input(type='password', name='password', placeholder='Password')
-          input.login.loginmodal-submit(type='submit', name='login', value='Login')
-        .login-help
-          a(href='/#introduce') Register
-          |  - 
-          a(href='#') Forgot Password
-
   body
     include partials/navbar.pug
 

@@ -14,6 +14,10 @@ router.get('/', (req, res, next) => {
     res.render('index', { account_number: 15, steem_transfered: 54, sbd_transfered: 23 });
 });
 
+router.get('/steem', (req, res, next) => {
+    res.render('steem', { account_number: 15, steem_transfered: 54, sbd_transfered: 23 });
+});
+
 router.get('/dashboard', (req, res, next) => {
     if (req.session.email) {
         if(!req.session.verified) {
@@ -51,11 +55,100 @@ router.get('/edit/:id', (req, res, next) => {
     }
 });
 
+router.get('/create-account/:id', (req, res, next) => {
+    if (req.session.email && req.session.moderator) {
+
+        Posts.findOne({ _id: req.params.id }, function (err, post) {
+            if (!err && post && post.status == 'published') {
+                
+                Users.findOne({email: post.email}, (err, user) => {
+
+                    if(!err && user && !user.created) {
+                        
+                        var password = steem.formatter.createSuggestedPassword();
+                        var publicKeys = steem.auth.generateKeys('test', password, ['owner', 'active', 'posting', 'memo']);
+                        let keys = steem.auth.getPrivateKeys('test', password);
+
+                        user.steem_password = password;
+                        user.steem_keys = keys;
+                        user.save((err) => {
+                            if(!err) {
+                                console.log(user.steem_password, user.steem_keys);
+                                
+                                steem.api.getConfig(function(err, config) {
+                                    if(err){
+                                      throw new Error(err);
+                                    }
+                                  
+                                    steem.api.getChainProperties(function(err2, chainProps) {
+                                        if(err2){
+                                            console.log(err2, chainProps);
+                                            throw new Error(err2);
+                                        }
+
+                                        var ratio = config['STEEM_CREATE_ACCOUNT_WITH_STEEM_MODIFIER'];
+                                        var fee = parseFloat(ratio * chainProps.account_creation_fee.replace(' STEEM',"")).toFixed(3);
+                                    
+                                        var feeString = fee + ' STEEM';
+                                        var jsonMetadata = '';
+
+                                        var owner = {
+                                            weight_threshold: 1,
+                                            account_auths: [],
+                                            key_auths: [[publicKeys.owner, 1]]
+                                        };
+                                        var active = {
+                                            weight_threshold: 1,
+                                            account_auths: [],
+                                            key_auths: [[publicKeys.active, 1]]
+                                        };
+                                        var posting = {
+                                            weight_threshold: 1,
+                                            account_auths: [],
+                                            key_auths: [[publicKeys.posting, 1]]
+                                        };
+                                            
+                                        // steem.broadcast.accountCreate(process.env.POSTING_KEY, fee, process.env.STEEM_USERNAME, user.account, owner, active, posting, memoKey, jsonMetadata, function(err, result) {
+                                        //     console.log(err, result);
+                                        //      user.
+                                        //      user.save() {
+                                        //      }
+                                        // });
+
+                                        res.redirect('/moderate');
+
+                                    })
+                                });
+                             
+                            } else {
+                                res.redirect('/');
+                            }
+                        })
+                        
+                    } else {
+                        res.redirect('/');        
+                    }
+                })
+            } else {
+                res.redirect('/');
+            }
+        })        
+    } else {
+        res.redirect('/');
+    }
+});
+
 router.get('/moderate', (req, res, next) => {
     if (req.session.email && req.session.moderator) {
         Posts.find({ status: 'added' }, function (err, posts) {
             if (!err) {
-                res.render('moderate', { posts: posts });
+                Posts.find({ status: 'published' }, function (err, published) {
+                    if (!err) {
+                        res.render('moderate', { posts: posts, published: published });
+                    } else {
+                        res.redirect('/');
+                    }
+                })
             } else {
                 res.redirect('/');
             }

@@ -1,32 +1,32 @@
 header.header-area
-    .header-bottom
-        .container
-          .row
-            .col-md-2.col-sm-8.col-xs-12
-              .logo
-                a(href='/')
-                  img(src='/images/logo-white.png', alt='')
-            .col-md-8.hidden-sm.hidden-xs
-              .mainmenu.text-right
-                ul#navigation
+  .header-bottom
+      .container
+        .row
+          .col-md-2.col-sm-8.col-xs-12
+            .logo
+              a(href='/')
+                img(src='/images/logo-white.png', alt='')
+          .col-md-8.hidden-sm.hidden-xs
+            .mainmenu.text-right
+              ul#navigation
+                li
+                  a(href='/') Home
+                li
+                  a(href='steem') What is a Steem
+                li
+                  a(href='/about') About us
+                li
+                  a(href='https://discord.gg/8NktdFh') Our Discord
+                if email
                   li
-                    a(href='/') Home
-                  li
-                    a(href='#') About Steem
-                  li
-                    a(href='#') About us
-                  li
-                    a(href='#') Contact
-                  if email
-                    li
-                      a(href='/logout') Logout
-            
-            .col-md-2.col-sm-3.col-xs-9
-              .free-seo.text-right
-                if ! email
-                  button(type='button', name='button' data-toggle="modal" data-target="#login-modal") Login and check
-                else 
-                  a(href='/dashboard')
-                    button(type='button', name='button') Dashboard
-            .col-sm-1.clear.col-xs-3.hidden-md.hidden-lg
-              .responsive-menu-wrap.floatright
+                    a(href='/logout') Logout
+          
+          .col-md-2.col-sm-3.col-xs-9
+            .free-seo.text-right
+              if ! email
+                button(type='button', name='button' data-toggle="modal" data-target="#login-modal") Login and check
+              else 
+                a(href='/dashboard')
+                  button(type='button', name='button') Dashboard
+          .col-sm-1.clear.col-xs-3.hidden-md.hidden-lg
+            .responsive-menu-wrap.floatright

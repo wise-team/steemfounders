@@ -22,7 +22,21 @@ html.no-js(lang='en')
         block header
     
         script(src='/js/vendor/modernizr-2.8.3.min.js')
-  
+
+    #login-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true', style='display: none;')
+        .modal-dialog
+            .loginmodal-container
+                h1 Login to Your Account
+                br
+                form(method="POST", action="/login")
+                    input(type='email', name='email', placeholder='E-mail')
+                    input(type='password', name='password', placeholder='Password')
+                    input.login.loginmodal-submit(type='submit', name='login', value='Login')
+                .login-help
+                    a(href='/#introduce') Register
+                    |  - 
+                    a(href='#') Forgot Password
+
     block body
   
     block scripts
