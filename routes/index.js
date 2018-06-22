@@ -216,6 +216,7 @@ router.post('/finish', (req, res) => {
                     user.hash = hash;
                     user.save((err) => {
                         if (!err) {
+                            req.session.verified = true;
                             res.json({success: 'Registration finished'});
                         } else {
                             console.log(err);
