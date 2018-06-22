@@ -192,4 +192,71 @@ $(document).ready(function () {
             });
         }
     });  
+
+    $('#login').submit(function (e) {
+        e.preventDefault();
+        if(!inProgress) {
+            inProgress = true;
+
+            var login_data = $(this).serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: login_data,
+                success: function (data) {
+                    inProgress = false;
+                    if (data.success) {
+                        
+                        $.notify({
+                            icon: "nc-icon nc-send",
+                            message: data.success            
+                        }, {
+                            type: 'success',
+                            timer: 8000,
+                            spacing: 15,
+                            placement: {
+                                from: 'top',
+                                align: 'right'
+                            }
+                        });
+
+                        setTimeout(function() {
+                            $(location).attr('href', '/dashboard')
+                        }, 1000);
+
+                    } else if (data.error) {
+                        inProgress = false;
+                        $.notify({
+                            icon: "nc-icon nc-fav-remove",
+                            message: data.error            
+                        }, {
+                            type: 'danger',
+                            timer: 8000,
+                            spacing: 15,
+                            placement: {
+                                from: 'top',
+                                align: 'right'
+                            }
+                        });
+                    }
+                },
+                error: function (data) {
+                    inProgress = false;
+                    $.notify({
+                        icon: "nc-icon nc-fav-remove",
+                        message: "Coś poszło nie tak..."        
+                    }, {
+                        type: 'danger',
+                        timer: 8000,
+                        spacing: 15,
+                        placement: {
+                            from: 'top',
+                            align: 'right'
+                        }
+                    });
+                }
+            });
+        }
+    });  
 });

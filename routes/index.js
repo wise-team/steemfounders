@@ -388,13 +388,13 @@ router.post('/login', (req, res) => {
                         if(user.moderator) {
                             req.session.moderator = true;
                         }
-                        res.redirect('/dashboard');
+                        res.json({success: 'Logged in successfully'});
                     } else {
-                        res.redirect('/');
+                        res.json({error: 'Invalid username or password'});
                     }
                 });
             } else {
-                res.redirect('/');
+                res.json({error: 'Invalid username or password'});
             }
         })
     }

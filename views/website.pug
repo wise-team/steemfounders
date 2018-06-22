@@ -28,7 +28,7 @@ html.no-js(lang='en')
             .loginmodal-container
                 h1 Login to Your Account
                 br
-                form(method="POST", action="/login")
+                form#login
                     input(type='email', name='email', placeholder='E-mail')
                     input(type='password', name='password', placeholder='Password')
                     input.login.loginmodal-submit(type='submit', name='login', value='Login')
