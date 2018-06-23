@@ -11,7 +11,13 @@ let Posts = require('../models/posts.js');
 let utils = require('../modules/utils.js');
 
 router.get('/', (req, res, next) => {
-    res.render('index', { account_number: 0, steem_transfered: 0, sbd_transfered: 0 });
+    Posts.count({created: true}, (err, count)=>{
+        if(!err && count) {
+            res.render('index', { account_number: count, steem_transfered: 0, sbd_transfered: 0 });
+        } else {
+            res.render('index', { account_number: 0, steem_transfered: 0, sbd_transfered: 0 });
+        }
+    })
 });
 
 router.get('/steem', (req, res, next) => {
