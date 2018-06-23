@@ -125,6 +125,8 @@ router.post('/create-account', (req, res, next) => {
                                                         user.created = true;
                                                         user.save((err)=>{
                                                             if (!err) {
+                                                                utils.sendInformationAfterAccountCreated(user.email, (err, info) => {console.log(err, info)});
+                                                                setTimeout(utils.commentAddAccountCreatedInfo(post, user), 30000);
                                                                 res.json({success: "Account created"})
                                                             } else {
                                                                 res.json({error: "Error occured. Try again"})

@@ -22,6 +22,9 @@ block body
             .row
                 .col-md-12.col-xs-12
                     .contact-wrap
+                        if !published.length && !posts.length
+                            h2 No posts to moderate at the moment
+
                         if posts.length   
                             h2 Posts to moderate 
                             hr            
