@@ -22,30 +22,31 @@ block body
             .row
                 .col-md-12.col-xs-12
                     .contact-wrap
-                        h2 Posts to moderate 
-                        hr               
-                        each post in posts
-                            .row.pt-100
-                                .col-md-5.col-xs-12.hidden-xs.hidden-sm
-                                    .case-details-img
-                                        if post.image
-                                            img.post-thumbnail(src=post.image, alt='')
-                                        else
-                                            img.post-thumbnail(src='/images/case/case-details2.png', alt='')
-                                .col-md-5.col-xs-12
-                                    .case-details-wrap
-                                        h2= post.title
-                                        p= post.body.substring(200,0) + '...'
-                                        each tag in post.tags.split(' ')
-                                            span.badge.badge-light= tag
-                                        
-                                .col-md-2.col-xs-12
-                                    .btn-group-vertical
-                                        a(href='/edit/' + post._id)
-                                            button.btn.btn-success(type='button') Edit and publish
-                                        a(disabled=true)
-                                            button.btn.btn-danger(type='button' disabled=true) Reject
-                        hr
+                        if posts.length   
+                            h2 Posts to moderate 
+                            hr            
+                            each post in posts
+                                .row.pt-100
+                                    .col-md-5.col-xs-12.hidden-xs.hidden-sm
+                                        .case-details-img
+                                            if post.image
+                                                img.post-thumbnail(src=post.image, alt='')
+                                            else
+                                                img.post-thumbnail(src='/images/case/case-details2.png', alt='')
+                                    .col-md-5.col-xs-12
+                                        .case-details-wrap
+                                            h2= post.title
+                                            p= post.body.substring(200,0) + '...'
+                                            each tag in post.tags.split(' ')
+                                                span.badge.badge-light= tag
+                                            
+                                    .col-md-2.col-xs-12
+                                        .btn-group-vertical
+                                            a(href='/edit/' + post._id)
+                                                button.btn.btn-success(type='button') Edit and publish
+                                            a(disabled=true)
+                                                button.btn.btn-danger(type='button' disabled=true) Reject
+                            hr
                         
                         if published.length
                             h2.pt-100 Already published but without account created

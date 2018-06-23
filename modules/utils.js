@@ -96,25 +96,31 @@ module.exports.publishPostOnSteem = (post, callback) => {
       }
       steem.broadcast.comment(process.env.POSTING_KEY, "", post.tags.split(' ')[0], process.env.STEEM_USERNAME, post.permlink, post.title, post.body, jsonMetadata, function (err, result) {
 
-          if(!err && result) {
-            let title = 'RE: ' + post.title;
-            let body = '**This post was moderated and accepted by @' + post.moderator + '**\n\nThe efficient operation of Steemfounders is ensured by our moderators, who deal with the correction and selection of all applications. You can vote for this comment to tip the person responsible for this post.';
-            let parentAuthor = process.env.STEEM_USERNAME;
-            let parentPermlink = post.permlink;
-            let author = process.env.STEEM_USERNAME;
-            let commentPermlink = steem.formatter.commentPermlink(parentAuthor, parentPermlink);
-            var commentMetadata = {
-              tags: ['steemfounders'],
-              app: "steemfounders/1.0",
-            }
+        setTimeout(addModeratorComment(post), 30000);
 
-            steem.broadcast.comment(process.env.POSTING_KEY, parentAuthor, parentPermlink, author, commentPermlink, title, body, commentMetadata, (err, steemResponse) => {
-              callback(err, steemResponse);    
-            });
-          } else {
-            callback(err, result);
-          }       
+        callback(err, result);
+            
       });
     }
   }
+}
+
+
+function addModeratorComment(post) {
+  if(post) {
+    let title = 'RE: ' + post.title;
+    let body = '**This post was moderated and accepted by @' + post.moderator + '**\n\nThe efficient operation of Steemfounders is ensured by our moderators, who deal with the correction and selection of all applications. You can vote for this comment to tip the person responsible for this post.';
+    let parentAuthor = process.env.STEEM_USERNAME;
+    let parentPermlink = post.permlink;
+    let author = process.env.STEEM_USERNAME;
+    let commentPermlink = steem.formatter.commentPermlink(parentAuthor, parentPermlink);
+    var commentMetadata = {
+      tags: ['steemfounders'],
+      app: "steemfounders/1.0",
+    }
+
+    steem.broadcast.comment(process.env.POSTING_KEY, parentAuthor, parentPermlink, author, commentPermlink, title, body, commentMetadata, (err, steemResponse) => {
+      console.log(err, steemResponse);
+    });
+  }     
 }

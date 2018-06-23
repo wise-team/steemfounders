@@ -355,6 +355,7 @@ router.post('/publish', (req, res) => {
                         post.tags = req.body.tags;
                         post.moderator = req.body.moderator;
                         post.status = 'published';
+                        post.created = false;
 
                         let image = req.body.image;
                         
