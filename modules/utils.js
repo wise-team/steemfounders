@@ -92,12 +92,13 @@ module.exports.publishPostOnSteem = (post, callback) => {
         image: image,
         links: links,
         format: "markdown",
+        moderator: post.moderator
       }
       steem.broadcast.comment(process.env.POSTING_KEY, "", post.tags.split(' ')[0], process.env.STEEM_USERNAME, post.permlink, post.title, post.body, jsonMetadata, function (err, result) {
 
           if(!err && result) {
             let title = 'RE: ' + post.title;
-            let body = '**This post was moderated and accepted by @' + post.moderator + '**\n\nOur moderators works for free, just because they want to support Steem community. If you would like to express gratitude to his charity work, please upvote this comment and he will receive all the rewards.';
+            let body = '**This post was moderated and accepted by @' + post.moderator + '**\n\nThe efficient operation of Steemfounders is ensured by our moderators, who deal with the correction and selection of all applications. You can vote for this comment to tip the person responsible for this post.';
             let parentAuthor = process.env.STEEM_USERNAME;
             let parentPermlink = post.permlink;
             let author = process.env.STEEM_USERNAME;

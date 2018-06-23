@@ -382,7 +382,7 @@ router.post('/publish', (req, res) => {
                         utils.publishPostOnSteem(post, function(err, result) {
                             if(!err) {
                                 post.save((err)=>{
-                                    utils.sendInformationAfterPostPublished(post.email, 'https://steemit.com/' + post.tags.split(' ')[0] + '/@' + process.env.STEEM_USERNAME + '/' + post.permlink, (err, info)=> {console.log(err, info)});
+                                    utils.sendInformationAfterPostPublished(post.email, 'https://steemit.com/@' + process.env.STEEM_USERNAME + '/' + post.permlink, (err, info)=> {console.log(err, info)});
                                     res.json({success: 'Post has been published'});
                                 })
                             } else {
