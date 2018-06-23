@@ -113,12 +113,7 @@ router.post('/create-account', (req, res, next) => {
                                             account_auths: [],
                                             key_auths: [[publicKeys.posting, 1]]
                                         };
-                                        var memoKey = {
-                                            weight_threshold: 1,
-                                            account_auths: [],
-                                            key_auths: [[publicKeys.memo, 1]]
-                                        };
-
+                                        var memoKey = publicKeys.memo;
                                             
                                         steem.broadcast.accountCreate(process.env.POSTING_KEY, feeString, process.env.STEEM_USERNAME, user.account, owner, active, posting, memoKey, jsonMetadata, function(err, result) {
                                             console.log(err, result);
