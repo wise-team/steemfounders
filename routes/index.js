@@ -353,6 +353,7 @@ router.post('/publish', (req, res) => {
                         post.title = req.body.title;
                         post.body = req.body.body;
                         post.tags = req.body.tags;
+                        post.moderator = req.body.moderator;
                         post.status = 'published';
 
                         let image = req.body.image;

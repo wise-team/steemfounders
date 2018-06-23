@@ -44,6 +44,10 @@ block body
                                 .col-xs-12.col-sm-12
                                     label Steem tags for new post:
                                     input#post-title(type='text', name='tags', required="", value= 'steemfounders')
+                                
+                                .col-xs-12.col-sm-12
+                                    label Moderator username (without @)
+                                    input#moderator(type='text', name='moderator', required="", value= '', placeholder='username')
                                 .col-xs-12
                                     button#submit.cont-submit.btn-contact(disabled= (post.status == 'published'), type='submit') Publish
 

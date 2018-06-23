@@ -94,7 +94,25 @@ module.exports.publishPostOnSteem = (post, callback) => {
         format: "markdown",
       }
       steem.broadcast.comment(process.env.POSTING_KEY, "", post.tags.split(' ')[0], process.env.STEEM_USERNAME, post.permlink, post.title, post.body, jsonMetadata, function (err, result) {
-        callback(err, result);
+
+          if(!err && result) {
+            let title = 'RE: ' + post.title;
+            let body = '**This post was moderated and accepted by @' + post.moderator + '**\n\nOur moderators works for free, just because they want to support Steem community. If you would like to express gratitude to his charity work, please upvote this comment and he will receive all the rewards.';
+            let parentAuthor = process.env.STEEM_USERNAME;
+            let parentPermlink = post.permlink;
+            let author = process.env.STEEM_USERNAME;
+            let commentPermlink = steem.formatter.commentPermlink(parentAuthor, parentPermlink);
+            var commentMetadata = {
+              tags: ['steemfounders'],
+              app: "steemfounders/1.0",
+            }
+
+            steem.broadcast.comment(process.env.POSTING_KEY, parentAuthor, parentPermlink, author, commentPermlink, title, body, commentMetadata, (err, steemResponse) => {
+              callback(err, steemResponse);    
+            });
+          } else {
+            callback(err, result);
+          }       
       });
     }
   }
