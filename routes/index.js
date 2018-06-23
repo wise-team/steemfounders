@@ -11,7 +11,7 @@ let Posts = require('../models/posts.js');
 let utils = require('../modules/utils.js');
 
 router.get('/', (req, res, next) => {
-    res.render('index', { account_number: 15, steem_transfered: 54, sbd_transfered: 23 });
+    res.render('index', { account_number: 0, steem_transfered: 0, sbd_transfered: 0 });
 });
 
 router.get('/steem', (req, res, next) => {
@@ -28,7 +28,13 @@ router.get('/dashboard', (req, res, next) => {
             } else {
                 Posts.findOne({ email: req.session.email }, function (err, post) {
                     if (!err) {
-                        res.render('dashboard', { post: post });
+                        Users.findOne({email: req.session.email}, function(err, user) {
+                            if(!err && user) {
+                                res.render('dashboard', { post: post, user: user});
+                            } else {
+                                res.redirect('/');        
+                            }
+                        })
                     } else {
                         res.redirect('/');
                     }
@@ -55,10 +61,10 @@ router.get('/edit/:id', (req, res, next) => {
     }
 });
 
-router.get('/create-account/:id', (req, res, next) => {
+router.post('/create-account', (req, res, next) => {
     if (req.session.email && req.session.moderator) {
 
-        Posts.findOne({ _id: req.params.id }, function (err, post) {
+        Posts.findOne({ _id: req.body.id }, function (err, post) {
             if (!err && post && post.status == 'published') {
                 
                 Users.findOne({email: post.email}, (err, user) => {
@@ -66,8 +72,8 @@ router.get('/create-account/:id', (req, res, next) => {
                     if(!err && user && !user.created) {
                         
                         var password = steem.formatter.createSuggestedPassword();
-                        var publicKeys = steem.auth.generateKeys('test', password, ['owner', 'active', 'posting', 'memo']);
-                        let keys = steem.auth.getPrivateKeys('test', password);
+                        var publicKeys = steem.auth.generateKeys(user.account, password, ['owner', 'active', 'posting', 'memo']);
+                        let keys = steem.auth.getPrivateKeys(user.account, password);
 
                         user.steem_password = password;
                         user.steem_keys = keys;
@@ -107,34 +113,56 @@ router.get('/create-account/:id', (req, res, next) => {
                                             account_auths: [],
                                             key_auths: [[publicKeys.posting, 1]]
                                         };
-                                            
-                                        // steem.broadcast.accountCreate(process.env.POSTING_KEY, fee, process.env.STEEM_USERNAME, user.account, owner, active, posting, memoKey, jsonMetadata, function(err, result) {
-                                        //     console.log(err, result);
-                                        //      user.
-                                        //      user.save() {
-                                        //      }
-                                        // });
+                                        var memoKey = {
+                                            weight_threshold: 1,
+                                            account_auths: [],
+                                            key_auths: [[publicKeys.memo, 1]]
+                                        };
 
-                                        res.redirect('/moderate');
+                                            
+                                        steem.broadcast.accountCreate(process.env.POSTING_KEY, feeString, process.env.STEEM_USERNAME, user.account, owner, active, posting, memoKey, jsonMetadata, function(err, result) {
+                                            console.log(err, result);
+
+                                            if(!err && result) {
+                                                post.created = true;
+                                                post.save((err) => {
+                                                    if(!err) {
+                                                        user.created = true;
+                                                        user.save((err)=>{
+                                                            if (!err) {
+                                                                res.json({success: "Account created"})
+                                                            } else {
+                                                                res.json({error: "Error occured. Try again"})
+                                                            }
+                                                        }); 
+                                                    } else {
+                                                        res.json({error: "Error occured. Try again"})
+                                                    }
+                                                });
+                                            } else {
+                                                res.json({error: "Error occured. Try again"})
+                                            }                                            
+                                            
+                                        });
 
                                     })
                                 });
                              
                             } else {
-                                res.redirect('/');
+                                res.json({error: "Error occured. Try again"})
                             }
                         })
                         
                     } else {
-                        res.redirect('/');        
+                        res.json({error: "Error occured. Try again"})        
                     }
                 })
             } else {
-                res.redirect('/');
+                res.json({error: "Error occured. Try again"})
             }
         })        
     } else {
-        res.redirect('/');
+        res.json({error: "Error occured. Try again"})
     }
 });
 
@@ -142,7 +170,7 @@ router.get('/moderate', (req, res, next) => {
     if (req.session.email && req.session.moderator) {
         Posts.find({ status: 'added' }, function (err, posts) {
             if (!err) {
-                Posts.find({ status: 'published' }, function (err, published) {
+                Posts.find({ status: 'published', created: false }, function (err, published) {
                     if (!err) {
                         res.render('moderate', { posts: posts, published: published });
                     } else {

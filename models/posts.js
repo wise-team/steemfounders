@@ -11,7 +11,8 @@ var postsSchema = new Schema({
     body: String,
     image: String,
     tags: String,
-    permlink: String
+    permlink: String,
+    created: Boolean
 });
 
 module.exports = mongoose.model('posts', postsSchema);

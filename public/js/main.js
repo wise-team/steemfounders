@@ -114,7 +114,7 @@ $(document).ready(function () {
                         url: "/finish",
                         data: $('#rf').serialize(),
                         success: function (data) {
-                            $(location).attr('href', '/dashboard')
+                            $(location).attr('href', '/dashboard');
                         },
                         error: function (data) {
                             console.log(data);

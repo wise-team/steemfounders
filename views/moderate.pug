@@ -3,6 +3,9 @@ extends website.pug
 block header
   title Moderator panel - Steemfounders
 
+append scripts
+    script(src='/js/moderate.js')
+
 
 block body
     include partials/navbar.pug
@@ -40,33 +43,33 @@ block body
                                     .btn-group-vertical
                                         a(href='/edit/' + post._id)
                                             button.btn.btn-success(type='button') Edit and publish
-                                        a(href='#' disabled=true)
+                                        a(disabled=true)
                                             button.btn.btn-danger(type='button' disabled=true) Reject
                         hr
                         
-                        h2.pt-100 Already published but without account created
-                        hr                  
-                        each post in published
-                            .row.pt-100
-                                .col-md-5.col-xs-12.hidden-xs.hidden-sm
-                                    .case-details-img
-                                        if post.image
-                                            img.post-thumbnail(src=post.image, alt='')
-                                        else
-                                            img.post-thumbnail(src='/images/case/case-details2.png', alt='')
-                                .col-md-5.col-xs-12
-                                    .case-details-wrap
-                                        a(href='https://steemit.com/steemfounders/@'+ process.env.STEEM_USERNAME + '/' + post.permlink)
-                                            h2= post.title
-                                        p= post.body.substring(200,0) + '...'
-                                        each tag in post.tags.split(' ')
-                                            span.badge.badge-light= tag
-                                .col-md-2.col-xs-12
-                                    .btn-group-vertical
-                                        a(href='/create-account/' + post._id)
-                                            button.btn.btn-success(type='button') Create account
-                                        a(href='#' disabled=true)
-                                            button.btn.btn-danger(type='button' disabled=true) Reject
+                        if published.length
+                            h2.pt-100 Already published but without account created
+                            hr                  
+                            each post in published
+                                .row.pt-100
+                                    input(type='hidden', name='_id', value= post._id)
+                                    .col-md-5.col-xs-12.hidden-xs.hidden-sm
+                                        .case-details-img
+                                            if post.image
+                                                img.post-thumbnail(src=post.image, alt='')
+                                            else
+                                                img.post-thumbnail(src='/images/case/case-details2.png', alt='')
+                                    .col-md-5.col-xs-12
+                                        .case-details-wrap
+                                            a(href='https://steemit.com/steemfounders/@'+ process.env.STEEM_USERNAME + '/' + post.permlink)
+                                                h2= post.title
+                                            p= post.body.substring(200,0) + '...'
+                                            each tag in post.tags.split(' ')
+                                                span.badge.badge-light= tag
+                                    .col-md-2.col-xs-12
+                                        .btn-group-vertical
+                                            a
+                                                button.btn.btn-success.create-account(type='button') Create account
 
     block footer
         .contact-area.pt-100

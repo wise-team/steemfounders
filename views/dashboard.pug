@@ -45,22 +45,40 @@ block body
                                     .col-xs-12
                                         button#submit.cont-submit.btn-contact(name='submit') Submit
                         else
-                            if post.status == 'added'
-                                h3 You successfully submitted your post. Wait for information from our moderators :)
-                            else if post.status == 'published'
-                                h3 You post has been published. Take a look how it's going ;)
-                                a(href=post.permlink) Read it on Steemit
-                            .row.pt-100
-                                .col-md-5.col-xs-12.hidden-xs.hidden-sm
-                                    .case-details-img
-                                        if post.image
-                                            img.post-thumbnail(src=post.image, alt='')
-                                        else
-                                            img.post-thumbnail(src='/images/case/case-details2.png', alt='')
-                                .col-md-6.col-md-offset-1.col-xs-12
-                                    .case-details-wrap
-                                        h2= post.title
-                                        p= post.body.substring(200,0) + '...'
+                            if !post.created
+                                if post.status == 'added'
+                                    h3 You successfully submitted your post. Wait for information from our moderators :)
+                                else if post.status == 'published'
+                                    h3 You post has been published. Take a look how it's going ;)
+                                    a(href=post.permlink) Read it on Steemit
+                                .row.pt-100
+                                    .col-md-5.col-xs-12.hidden-xs.hidden-sm
+                                        .case-details-img
+                                            if post.image
+                                                img.post-thumbnail(src=post.image, alt='')
+                                            else
+                                                img.post-thumbnail(src='/images/case/case-details2.png', alt='')
+                                    .col-md-6.col-md-offset-1.col-xs-12
+                                        .case-details-wrap
+                                            h2= post.title
+                                            p= post.body.substring(200,0) + '...'
+                            else
+                                h3 Your account has been created! Here you have all neccessary data:
+                                label Your Steem account:
+                                input(type='text', readonly=true, value= user.account)
+                                label Your Steem account password:
+                                input(type='text', readonly=true, value= user.steem_password)
+                                label Your private Steem keys:
+                                textarea(rows=10, type='text', readonly=true)= JSON.stringify({posting: user.steem_keys.posting, active: user.steem_keys.active, owner: user.steem_keys.owner, memo: user.steem_keys.memo}, null, 4)
+                                    //- = 'posting: ' + user.steem_keys.posting
+                                    //- = '\nactive: ' + user.steem_keys.active
+                                    //- = '\nowner: ' + user.steem_keys.owner
+                                    //- = '\nmemo: ' + user.steem_keys.memo
+
+                                p Don't share this keys with anyone. Consider it as your bank account's password.
+
+                                p You can login here: 
+                                    a(href='https://steemit.com/login.html', target='_blank') STEEMIT LOGIN PAGE
     block footer
         .contact-area.pt-100
             .contact-area.pt-100
