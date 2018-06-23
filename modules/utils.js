@@ -87,7 +87,7 @@ module.exports.publishPostOnSteem = (post, callback) => {
       });
 
       var jsonMetadata = {
-        tags: post.tags,
+        tags: post.tags.split(' '),
         app: "steemfounders/1.0",
         image: image,
         links: links,
