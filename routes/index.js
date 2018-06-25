@@ -131,9 +131,13 @@ router.post('/create-account', (req, res, next) => {
                                                         user.created = true;
                                                         user.save((err)=>{
                                                             if (!err) {
-                                                                utils.sendInformationAfterAccountCreated(user.email, (err, info) => {console.log(err, info)});
-                                                                setTimeout(utils.commentAddAccountCreatedInfo(post, user), 30000);
-                                                                res.json({success: "Account created"})
+                                                                utils.sendInformationAfterAccountCreated(user.email, (err, info) => {
+                                                                    console.log(err, info);
+                                                                    utils.commentAddAccountCreatedInfo(post, user, (err, response) => {
+                                                                        console.log(err, response);
+                                                                        res.json({success: "Account created"})
+                                                                    });
+                                                                });
                                                             } else {
                                                                 res.json({error: "Error occured. Try again"})
                                                             }
@@ -222,7 +226,7 @@ router.post('/register', (req, res) => {
                                 res.json({ error: "Error occured. Try again" });
                             }
                             else {
-                                console.log('Response: ' + JSON.stringify(info, null, 10));
+                                console.log('New user register mail sent: ' + JSON.stringify(info, null, 10));
                                 res.json({ success: "Activation link sent" });
                             }
                         })
@@ -385,9 +389,11 @@ router.post('/publish', (req, res) => {
 
                         utils.publishPostOnSteem(post, function(err, result) {
                             if(!err) {
-                                post.save((err)=>{
-                                    utils.sendInformationAfterPostPublished(post.email, 'https://steemit.com/@' + process.env.STEEM_USERNAME + '/' + post.permlink, (err, info)=> {console.log(err, info)});
-                                    res.json({success: 'Post has been published'});
+                                post.save((err) => {
+                                    utils.sendInformationAfterPostPublished(post.email, 'https://steemit.com/@' + process.env.STEEM_USERNAME + '/' + post.permlink, (err, info) => {
+                                        console.log(err, info)
+                                        res.json({success: 'Post has been published'});
+                                    });
                                 })
                             } else {
                                 res.json({error: 'Error while publishing on Steem. ' + err.message });

@@ -96,7 +96,10 @@ module.exports.publishPostOnSteem = (post, callback) => {
       }
       steem.broadcast.comment(process.env.POSTING_KEY, "", post.tags.split(' ')[0], process.env.STEEM_USERNAME, post.permlink, post.title, post.body, jsonMetadata, function (err, result) {
 
-        setTimeout(commentAddModeratorInfo(post), 30000);
+        let post_info = post;
+        setTimeout(function() {
+          commentAddModeratorInfo(post_info);
+        },30000);
 
         callback(err, result);
             
@@ -130,7 +133,7 @@ function commentAddModeratorInfo(post) {
   }     
 }
 
-module.exports.commentAddAccountCreatedInfo = (post, user) => {
+module.exports.commentAddAccountCreatedInfo = (post, user, callback) => {
   if(post && user) {
     let body = '';
     if(post.tags.split(' ')[0] == 'steemfounders-pl') {
@@ -150,6 +153,8 @@ module.exports.commentAddAccountCreatedInfo = (post, user) => {
 
     steem.broadcast.comment(process.env.POSTING_KEY, parentAuthor, parentPermlink, author, commentPermlink, title, body, commentMetadata, (err, steemResponse) => {
       console.log(err, steemResponse);
+      callback(err, steemResponse)
+
     });
   }  
 }
