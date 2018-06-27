@@ -114,7 +114,7 @@ function commentAddModeratorInfo(post) {
     let title = 'RE: ' + post.title;
     let body = '';
     if(post.tags.split(' ')[0] == 'steemfounders-pl') {
-      body = '**Ten post został sprawdzony i zaakceptowany przez @' + post.moderator + '**\n\nSkuteczność platformy Steemfounders zapewniają nasi moderatorzy, którzy zamują się korektą i wyborem najlepszych zgłoszeń. Możesz zagłosować na ten komentarz, aby wesprzeć osobę odpowiedzialną za ten wpis.';
+      body = '**Ten post został sprawdzony i zaakceptowany przez @' + post.moderator + '**\n\nSkuteczność platformy Steemfounders zapewniają nasi moderatorzy, którzy zajmują się korektą i wyborem najlepszych zgłoszeń. Możesz zagłosować na ten komentarz, aby wesprzeć osobę odpowiedzialną za ten wpis.';
     } else {
       body = '**This post was moderated and accepted by @' + post.moderator + '**\n\nThe efficient operation of Steemfounders is ensured by our moderators, who deal with the correction and selection of all applications. You can vote for this comment to tip the person responsible for this post.';
     }
