@@ -20,8 +20,8 @@ $(document).ready(function () {
             data: {id: post_id, reason: reason},
             success: function (data) {
                 accept.attr("disabled", false);
+                $('#rejectModal').modal('hide');
                 if(data.success) {
-                    $('#rejectModal').modal('hide');
                     btn_clicked.parent().parent().parent().parent().remove();
                     showSuccess(data);
                 } else {
@@ -29,6 +29,7 @@ $(document).ready(function () {
                 }
             },
             error: function (data) {
+                $('#rejectModal').modal('hide');
                 accept.attr("disabled", false);
                 console.log(data);
                 showError(data);
@@ -68,7 +69,7 @@ $(document).ready(function () {
 
 function showError(data) {
     $.notify({
-        icon: "nc-icon nc-send",
+        icon: "glyphicon glyphicon-remove",
         message: data.error          
     }, {
         type: 'danger',
@@ -82,7 +83,7 @@ function showError(data) {
 }
 function showSuccess(data) {
     $.notify({
-        icon: "nc-icon nc-send",
+        icon: "glyphicon glyphicon-ok",
         message: data.success          
     }, {
         type: 'success',
