@@ -287,6 +287,34 @@ router.post('/check', (req, res) => {
     }
 })
 
+router.post('/reject', (req, res) => {
+    if(req.session.email && req.session.moderator && req.body.id && req.body.reason) {
+        Posts.findOne({ _id: req.body.id }, function (err, post) {
+            if (!err && post && post.status == 'added') {
+                post.status = 'rejected';
+                post.save((err)=>{
+                    if(!err) {
+                        utils.sendRejectedInformation(post.email, req.body.reason, function(err) {
+                            if(!err) {
+                                console.log("Rejected email sent to author");
+                                res.json({success: "Post rejected successfully"});
+                            } else {
+                                res.json({error: "Email not sent but post rejected"});
+                            }
+                        })
+                    } else {
+                        res.json({error: "Error while saving database. Try again"});
+                    }
+                })
+            } else {
+                res.json({error: "Post doesn\'t exists or already rejected"});
+            }
+        });
+    } else {
+        res.json({error: "Not authorized"});
+    }
+})
+
 router.post('/add', (req, res) => {
     if(req.session.email) {
         if (req.body.title && req.body.title != '' && req.body.body && req.body.body != '' && req.body.tags && req.body.tags != '') {

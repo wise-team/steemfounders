@@ -8,6 +8,20 @@ append scripts
 
 
 block body
+    #rejectModal.modal.fade.modal.modal-primary(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header.justify-content-center
+                .modal-body.text-center
+                    p You are about to reject this post. Say why:
+                    .form-group
+                        label.col-form-label(for='reason') Reason:
+                        textarea#reason(rows=4, required=true).form-control
+
+                .modal-footer
+                    button.btn.btn-simple(type='button', data-dismiss='modal') Back
+                    button.btn.btn-danger.btn-fill#btn-reject(type='button') Reject
+
     include partials/navbar.pug
 
     .breadcumb-area
@@ -30,6 +44,7 @@ block body
                             hr            
                             each post in posts
                                 .row.pt-100
+                                    input(type='hidden', name='reject_id', value= post._id)
                                     .col-md-5.col-xs-12.hidden-xs.hidden-sm
                                         .case-details-img
                                             if post.image
@@ -48,7 +63,7 @@ block body
                                             a(href='/edit/' + post._id)
                                                 button.btn.btn-success(type='button') Edit and publish
                                             a(disabled=true)
-                                                button.btn.btn-danger(type='button' disabled=true) Reject
+                                                button.btn.btn-danger.btn-func-reject(type='button') Reject
                             hr
                         
                         if published.length

@@ -42,6 +42,15 @@ module.exports.sendInformationAfterPostPublished = (email, post_link, callback) 
   }, callback);
 }
 
+module.exports.sendRejectedInformation = (email, reason, callback) => {
+  nodemailerMailgun.sendMail({
+    from: { name: 'Steemfounders', address: 'noreplay@steemfounders.com' },
+    to: email,
+    subject: 'Your post has been rejected',
+    html: 'Hi,<br>we are sorry to say that but your intruducing post has been rejected by one of ours moderators and it won\'t be published.<br><br>Here you can read moderator\'s explanation:<br><br><blockquote>' + reason + '</blockquote><br><br>You can contact with us using <a href=\"https://discord.gg/8NktdFh\">Discord</a>.<br>Steemfounders Team',
+  }, callback);
+}
+
 module.exports.moderatorInformAboutNewPost = (email, callback) => {
   nodemailerMailgun.sendMail({
     from: { name: 'Steemfounders', address: 'noreplay@steemfounders.com' },
