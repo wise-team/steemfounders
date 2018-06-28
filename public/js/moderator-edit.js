@@ -1,6 +1,17 @@
 $(document).ready(function () {
 
+    $('body').on('click', '.btn-func-publish', function(e) {
+        $('#publishModal').modal();
+    });
+
+
+    $('body').on('click', '#btn-publish', function(e) {
+        $('#btn-publish').attr("disabled", true);
+        $('#post').submit();
+    });
+
     let id = $('#_id').val();
+
     var simplemde = new SimpleMDE(
         {
             autosave: {
@@ -20,6 +31,8 @@ $(document).ready(function () {
           
         });
 
+
+
     $('#post').submit(function (e) {
         e.preventDefault();
         $('#submit').attr("disabled", true);
@@ -28,7 +41,8 @@ $(document).ready(function () {
             url: "/publish",
             data: $(this).serialize(),
             success: function (data) {
-                console.log(data);;
+                $('#btn-publish').attr("disabled", false);
+                $('#publishModal').modal('hide');
                 if(data.success) {
                     showNotification('success', data.success);
                     setTimeout(function() {
@@ -40,6 +54,8 @@ $(document).ready(function () {
                 }
             },
             error: function (data) {
+                $('#btn-publish').attr("disabled", false);
+                $('#publishModal').modal('hide');
                 showNotification('danger', data.error);
                 $('#submit').attr("disabled", false)
             }
@@ -48,10 +64,11 @@ $(document).ready(function () {
 
     function showNotification(type, message) {
         $.notify({
-            icon: "nc-icon nc-fav-remove",
+            icon: (type == 'danger') ? 'glyphicon glyphicon-remove' : 'glyphicon glyphicon-ok',
             message: message          
         }, {
             type: type,
+            allow_dismiss: true,
             timer: 8000,
             spacing: 15,
             placement: {

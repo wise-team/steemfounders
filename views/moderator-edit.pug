@@ -10,6 +10,19 @@ append scripts
     script(src='/js/moderator-edit.js')
 
 block body
+    #publishModal.modal.fade.modal.modal-primary(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header.justify-content-center
+                .modal-body.text-center
+                    p You are about to publish new blog post to Steem blockchain
+                    hr
+                    h4 Please be aware that you may not be able to delete it later
+
+                .modal-footer
+                    button.btn.btn-simple(type='button', data-dismiss='modal') Back
+                    button.btn.btn-success.btn-fill#btn-publish(type='button') Publish
+
     include partials/navbar.pug
 
     .breadcumb-area
@@ -49,7 +62,7 @@ block body
                                     label Moderator username (without @)
                                     input#moderator(type='text', name='moderator', required="", value= '', placeholder='username')
                                 .col-xs-12
-                                    button#submit.cont-submit.btn-contact(disabled= (post.status == 'published'), type='submit') Publish
+                                    button#submit.cont-submit.btn-contact.btn-func-publish(disabled= (post.status == 'published'), type='button') Publish
 
     block footer
         .contact-area.pt-100
