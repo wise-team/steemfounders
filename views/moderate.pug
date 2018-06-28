@@ -22,6 +22,20 @@ block body
                     button.btn.btn-simple(type='button', data-dismiss='modal') Back
                     button.btn.btn-danger.btn-fill#btn-reject(type='button') Reject
 
+    #createAccountModal.modal.fade.modal.modal-primary(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header.justify-content-center
+                .modal-body.text-center
+                    p You are about to create new account
+                    hr
+                    h4 Please be aware that it cost 3 STEEM and it cannot be undone
+
+
+                .modal-footer
+                    button.btn.btn-simple(type='button', data-dismiss='modal') Back
+                    button.btn.btn-success.btn-fill#btn-create(type='button') Create new account
+
     include partials/navbar.pug
 
     .breadcumb-area

@@ -37,20 +37,24 @@ $(document).ready(function () {
         });        
     });
 
-    
-
     $('body').on('click', '.create-account', function(e) {
-
         btn_clicked = $(this);
         post_id = $(this).parent().parent().parent().parent().find('input:hidden').attr('value');
-        btn_clicked.attr("disabled", true);
+        $('#createAccountModal').modal();
+    })
+
+    $('body').on('click', '#btn-create', function(e) {
+     
+        accept = $(this);
+        accept.attr("disabled", true);
 
         $.ajax({
             type: "POST",
             url: "/create-account",
             data: {id: post_id},
             success: function (data) {
-                btn_clicked.attr("disabled", false);
+                $('#createAccountModal').modal('hide');
+                accept.attr("disabled", false);
                 if(data.success) {
                     btn_clicked.parent().parent().parent().parent().remove();
                     showSuccess(data);
@@ -59,7 +63,8 @@ $(document).ready(function () {
                 }
             },
             error: function (data) {
-                btn_clicked.attr("disabled", false);
+                $('#createAccountModal').modal('hide');
+                accept.attr("disabled", false);
                 console.log(data);
                 showError(data);
             }
