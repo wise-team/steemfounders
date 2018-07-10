@@ -16,6 +16,7 @@ let session = require('express-session');
 let expressSanitized = require('express-sanitize-escape');
 let moment = require("moment");
 var fs = require('fs');
+var latest = require('./modules/latest-posts.js');
 
 console.log("Launched on " + moment().format("LLLL"));
 
@@ -61,6 +62,8 @@ app.use(function (req, res, next) {
     err.status = 404;
     next(err);
 });
+
+latest.initialize();
 
 // error handler
 app.use(function (err, req, res, next) {

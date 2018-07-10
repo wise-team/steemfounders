@@ -9,13 +9,14 @@ const isImage = require('is-image');
 let Users = require('../models/users.js');
 let Posts = require('../models/posts.js');
 let utils = require('../modules/utils.js');
+let latest = require('../modules/latest-posts.js');
 
 router.get('/', (req, res, next) => {
     Posts.count({created: true}, (err, count)=>{
         if(!err && count) {
-            res.render('index', { account_number: count, steem_transfered: 0, sbd_transfered: 0 });
+            res.render('index', { account_number: count, steem_transfered: 0, sbd_transfered: 0, latest: latest.getLatest() });
         } else {
-            res.render('index', { account_number: 0, steem_transfered: 0, sbd_transfered: 0 });
+            res.render('index', { account_number: 0, steem_transfered: 0, sbd_transfered: 0, latest: latest.getLatest() });
         }
     })
 });
@@ -360,7 +361,11 @@ router.post('/add', (req, res) => {
                         Users.find({moderator: true}, (err, users) => {
                             if(!err && users.length) {
                                 users.forEach((user)=>{
-                                    utils.moderatorInformAboutNewPost(user.email,(err, info) => console.log(err, info));
+                                    utils.moderatorInformAboutNewPost(user.email, (err) => {
+                                        if(!err) {
+                                            console.log('Mail sent to moderator');
+                                        }
+                                    });
                                 })
                             } else {
                                 console.log("No moderators found. We're not sending emails");

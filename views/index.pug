@@ -10,7 +10,6 @@ block body
   body
     include partials/navbar.pug
 
-
     .hero-area
       .particleground
       .hero-items
@@ -97,33 +96,14 @@ block body
             .section-title.text-center
               h2 Latest posts
         .row
-          .col-md-4.col-sm-6.col-xs-12
-            .blog-wrap
-              .blog-img
-                img(src='https://steemitimages.com/256x512/http://www.oa.uj.edu.pl/B.Debski/img2/oa-big.jpg', alt='')
-              .blog-content
-                h3 Astronom Pierwszego Kontaktu wita się ze Steem
-                p
-                  | Zawsze podziwiałem Wszechświat za jego umiejętność prostego rozpoczynania rzeczy. Weźmy taki początek Wszystkiego. Czy to było coś skomplikowanego? Skądże znowu...
-                a(href='https://steemit.com/steemfounders-pl/@steemfounders/astronom-pierwszego-kontaktu-wita-sie-ze-steem-20180623t135637049z') Read on Steemit
-    //-       .col-md-4.col-sm-6.col-xs-12
-    //-         .blog-wrap
-    //-           .blog-img
-    //-             img(src='/images/2.jpg', alt='')
-    //-           .blog-content
-    //-             h3 How to booste your traffic your blog & destroy competition.
-    //-             p
-    //-               | Increase number backlinks and inbound another seo tam mobile search surpassed was reported that google.
-    //-             a(href='#') Read on Steemit
-    //-       .col-md-4.col-sm-6.col-xs-12
-    //-         .blog-wrap
-    //-           .blog-img
-    //-             img(src='/images/3.jpg', alt='')
-    //-           .blog-content
-    //-             h3 Decphering marketing lingo for small business owners.
-    //-             p
-    //-               | Increase number backlinks and inbound another seo tam mobile search surpassed was reported that google.
-    //-             a(href='#') Read on Steemit
+          each post in latest
+            .col-md-4.col-sm-6.col-xs-12
+              .blog-wrap
+                .blog-img
+                  img(src=post.image, alt='')
+                .blog-content
+                  h3= post.title
+                  a(href='https://steemit.com/steemfounders-pl/@steemfounders/' + post.permlink) Read on Steemit
 
     #introduce.pricing-table-area
       .container
