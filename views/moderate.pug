@@ -107,7 +107,7 @@ block body
                                                 img.post-thumbnail(src='/images/case/case-details2.png', alt='')
                                     .col-md-5.col-xs-12
                                         .case-details-wrap
-                                            a(href='https://steemit.com/steemfounders/@'+ process.env.STEEM_USERNAME + '/' + post.permlink)
+                                            a(href='https://steemit.com/@'+ process.env.STEEM_USERNAME + '/' + post.permlink)
                                                 h2= post.title
                                             p= post.body.substring(200,0) + '...'
                                             each tag in post.tags.split(' ')
