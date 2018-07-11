@@ -1087,6 +1087,7 @@ a#scrollUp:hover{
     border-radius: 5px;
     margin-bottom: 30px;
     background: #fff;
+    min-height: 400px;
 }
 .blog-wrap:hover{
     box-shadow:
