@@ -320,6 +320,27 @@ router.post('/reject', (req, res) => {
     }
 })
 
+router.post('/hide', (req, res) => {
+    if(req.session.email && req.session.moderator  && req.body.id) {
+        Posts.findOne({ _id: req.body.id }, function (err, post) {
+            if (!err && post && post.status == 'published') {
+                post.status = 'hidden';
+                post.save((err)=>{
+                    if(!err) {
+                        res.json({success: "Post hidden successfully"});
+                    } else {
+                        res.json({error: "Error while saving database. Try again"});
+                    }
+                })
+            } else {
+                res.json({error: "Post doesn\'t exists or already hidden"});
+            }
+        });
+    } else {
+        res.json({error: "Not authorized"});
+    }
+})
+
 router.post('/add', (req, res) => {
     if(req.session.email) {
         if (req.body.title && req.body.title != '' && req.body.body && req.body.body != '' && req.body.tags && req.body.tags != '') {

@@ -43,6 +43,12 @@ $(document).ready(function () {
         $('#createAccountModal').modal();
     })
 
+    $('body').on('click', '.hide-entry', function(e) {
+        btn_clicked = $(this);
+        post_id = $(this).parent().parent().parent().parent().find('input:hidden').attr('value');
+        $('#hideEntryModal').modal();
+    })
+
     $('body').on('click', '#btn-create', function(e) {
      
         accept = $(this);
@@ -64,6 +70,34 @@ $(document).ready(function () {
             },
             error: function (data) {
                 $('#createAccountModal').modal('hide');
+                accept.attr("disabled", false);
+                console.log(data);
+                showError(data);
+            }
+        });
+    })
+
+    $('body').on('click', '#btn-hide', function(e) {
+     
+        accept = $(this);
+        accept.attr("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            url: "/hide",
+            data: {id: post_id},
+            success: function (data) {
+                $('#hideEntryModal').modal('hide');
+                accept.attr("disabled", false);
+                if(data.success) {
+                    btn_clicked.parent().parent().parent().parent().remove();
+                    showSuccess(data);
+                } else {
+                    showError(data);
+                }
+            },
+            error: function (data) {
+                $('#hideEntryModal').modal('hide');
                 accept.attr("disabled", false);
                 console.log(data);
                 showError(data);

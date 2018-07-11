@@ -35,6 +35,19 @@ block body
                 .modal-footer
                     button.btn.btn-simple(type='button', data-dismiss='modal') Back
                     button.btn.btn-success.btn-fill#btn-create(type='button') Create new account
+    #hideEntryModal.modal.fade.modal.modal-primary(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header.justify-content-center
+                .modal-body.text-center
+                    p You are about to hide this entry
+                    hr
+                    h4 Please be aware you won't see it again. Should be used only when post not earned enough to create new account.
+
+
+                .modal-footer
+                    button.btn.btn-simple(type='button', data-dismiss='modal') Back
+                    button.btn.btn-danger.btn-fill#btn-hide(type='button') Hide
 
     include partials/navbar.pug
 
@@ -103,6 +116,7 @@ block body
                                         .btn-group-vertical
                                             a
                                                 button.btn.btn-success.create-account(type='button') Create account
+                                                button.btn.btn-danger.hide-entry(type='button') Hide
 
     block footer
         .contact-area.pt-100
