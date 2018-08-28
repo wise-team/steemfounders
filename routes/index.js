@@ -69,6 +69,23 @@ router.get('/edit/:id', (req, res, next) => {
     }
 });
 
+router.post('/assing-moderator', (req, res, next) => {
+    if (req.session.email && req.session.moderator && req.session.admin) {
+        Users.findOne({ email: req.body.email }, (err, user) => {
+            if(err || user == null) res.json({error: "Error occured. Try again."});
+            else {
+                user.moderator = true;
+                user.save((err)=>{
+                    if(err) console.log(err);
+                    else res.json({success: "Moderator permissions assigned"});
+                });
+            }
+        });
+    } else {
+        res.json({ error: "Error occured. Try again... or maybe don't." })
+    }
+});
+
 router.post('/create-account', (req, res, next) => {
     if (req.session.email && req.session.moderator) {
 

@@ -117,6 +117,21 @@ block body
                                             a
                                                 button.btn.btn-success.create-account(type='button') Create account
                                                 button.btn.btn-danger.hide-entry(type='button') Hide
+            if admin == true
+                .row.pt-100
+                    .col-md-12.col-xs-12.pt-100
+                        .contact-wrap
+                            h2.pt-500 Admin tools
+                            hr  
+                        
+                            .container
+                                .row
+                                    .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-2.col-xs-12
+                                        .newsletter-wrap
+                                            label(for='#assign-moderator') Type e-mail address you want to assign as a moderator:
+                                            form#assign-mod-form
+                                                input#assign-mod-email(type='email', placeholder='E-mail address here', name='email', required=true)
+                                                button(type='submit', name='button')#assign-moderator Assign moderator
 
     block footer
         .contact-area.pt-100

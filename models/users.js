@@ -10,6 +10,7 @@ var userSchema = new Schema({
     account: String,
     created: Boolean,
     moderator: Boolean,
+    admin: Boolean,
     steem_password: String,
     steem_keys: Object
 });

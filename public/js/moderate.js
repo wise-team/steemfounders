@@ -103,7 +103,32 @@ $(document).ready(function () {
                 showError(data);
             }
         });
-    })
+    });
+
+    $('body').on('click', '#assign-moderator', function (e) {
+        e.preventDefault();
+
+        $('#assign-mod-form').parsley().validate();
+        if ($('#assign-mod-form').parsley().isValid()) {
+            let email = $("#assign-mod-email").val();
+            $.ajax({
+                type: "POST",
+                url: "/assing-moderator",
+                data: { email: email },
+                success: function (data) {
+                    if (data.success) {
+                        showSuccess(data);
+                    } else {
+                        showError(data);
+                    }
+                },
+                error: function (data) {
+                    showError(data);
+                }
+            });
+        }
+    });
+
 });
 
 function showError(data) {
