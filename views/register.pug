@@ -31,8 +31,19 @@ block body
                                     input#password(type='password', required="" name='password', placeholder='Password')
                                 .col-xs-12.col-sm-6
                                     input#passwordConf(type='password', name='passwordConf', required='', data-parsley-equalto="#password", placeholder='Retype password')
-                                .col-xs-12.col-sm-12
+                                .col-xs-12.col-sm-6
                                     input#account(type='text', name='account', placeholder='Preffered Steem account name')
+                                    p#info
+                                .col-xs-12.col-sm-6
+                                    select(required=true, name='community')#community
+                                        option(selected= true, disabled=true, hidden= true) Preffered language
+                                        option(value='en') English
+                                        option(value='pl') Polish
+                                        option(value='jp') Japanese
+                                        option(value='idn') Indonesian
+                                        option(value='kr') Korean
+                                        option(value='sp') Spanish
+                                        option(value='other') Other
                                     p#info
                                 .col-xs-12
                                     button#submit.cont-submit.btn-contact(name='submit') Let's start

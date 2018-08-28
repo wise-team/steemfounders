@@ -12,7 +12,9 @@ var userSchema = new Schema({
     moderator: Boolean,
     admin: Boolean,
     steem_password: String,
-    steem_keys: Object
+    steem_keys: Object,
+    community: String,
+    moderator_communities: [String]
 });
 
 module.exports = mongoose.model('users', userSchema);

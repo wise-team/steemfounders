@@ -266,6 +266,7 @@ router.post('/finish', (req, res) => {
                 bcrypt.hash(req.body.password, 10, function (err, hash) {
                     user.hash = req.body.email;
                     user.account = req.body.account;
+                    user.community = req.body.community;
                     user.verified = true;
                     user.hash = hash;
                     user.save((err) => {

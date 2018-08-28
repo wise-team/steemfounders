@@ -1862,7 +1862,7 @@ aside.blog-siderbar-area.left-sidebar {
 }
 
 .loginmodal-container input[type=email], input[type=password] {
-  height: 44px;
+  height: 50px;
   font-size: 16px;
   width: 100%;
   margin-bottom: 10px;
@@ -1947,4 +1947,24 @@ button[disabled] {
 
 #fukako-link {
     color: white;
+}
+
+select {
+  height: 50px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  border-radius: 2px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.tips-list {
+    list-style-type: disc;
+    margin-top: 20px;
+    margin-left: 40px;
 }

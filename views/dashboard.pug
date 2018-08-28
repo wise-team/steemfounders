@@ -26,12 +26,40 @@ block body
                 .col-md-12.col-xs-12
                     .contact-wrap
                         if ! post
-                            h3 Write your #intruduceyourself post
+                            h3 Write your introduce post
+
+                            hr
+
+                            h3 To get best results please read: 
+                                ul.tips-list
+                                    case user.community
+                                        when "pl"
+                                            li
+                                                a(href="https://steemit.com/steemfounders/@santarius/guide-for-users-applying-for-creating-an-account-with-steemfounders") Guide for users applying for creating an account with Steemfounders
+                                        when "en"
+                                            li
+                                                a(href="https://steemit.com/steemfounders/@santarius/guide-for-users-applying-for-creating-an-account-with-steemfounders") Guide for users applying for creating an account with Steemfounders
+                                        when "jp"
+                                            li
+                                                a(href="https://steemit.com/steemfounders/@santarius/guide-for-users-applying-for-creating-an-account-with-steemfounders") Guide for users applying for creating an account with Steemfounders
+                                        when "idn"
+                                            li
+                                                a(href="https://steemit.com/idn-steemfounders/@macchiata/panduan-untuk-calon-pengguna-baru-steemit-melalui-layanan-steemfounders") Panduan untuk Calon Pengguna Baru Steemit Melalui Layanan Steemfounders
+                                        when "kr"
+                                            li
+                                                a(href="https://steemit.com/steemfounders/@santarius/guide-for-users-applying-for-creating-an-account-with-steemfounders") Guide for users applying for creating an account with Steemfounders
+                                        when "sp"
+                                            li
+                                                a(href="https://steemit.com/spanish/@flaws/guia-para-los-usuarios-solicitando-una-cuenta-con-steemfounders") Guía para los usuarios solicitantes de una cuenta con Steemfounders
+                                        default
+                                            li
+                                                a(href='https://steemit.com/steemfounders/@santarius/guide-for-users-applying-for-creating-an-account-with-steemfounders') Guide for users applying for creating an account with Steemfounders
+
                             .cf-msg
                             form#post(action='/add', method='POST')
                                 .row
                                     .col-xs-12.col-sm-8
-                                        label You post title:
+                                        label Your post title:
                                         input#post-title(type='text', name='title', required="", placeholder='Title...')
                                     .col-xs-12.col-sm-12
                                         label Post body:
