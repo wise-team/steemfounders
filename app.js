@@ -17,6 +17,7 @@ let expressSanitized = require('express-sanitize-escape');
 let moment = require("moment");
 var fs = require('fs');
 var latest = require('./modules/latest-posts.js');
+var transfers = require('./modules/transfers.js');
 
 console.log("Launched on " + moment().format("LLLL"));
 
@@ -64,6 +65,7 @@ app.use(function (req, res, next) {
 });
 
 latest.initialize();
+transfers.initialize();
 
 // error handler
 app.use(function (err, req, res, next) {

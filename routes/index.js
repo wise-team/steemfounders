@@ -10,13 +10,14 @@ let Users = require('../models/users.js');
 let Posts = require('../models/posts.js');
 let utils = require('../modules/utils.js');
 let latest = require('../modules/latest-posts.js');
+let transfers = require('../modules/transfers.js');
 
 router.get('/', (req, res, next) => {
     Posts.count({created: true}, (err, count)=>{
         if(!err && count) {
-            res.render('index', { account_number: count, steem_transfered: 0, sbd_transfered: 0, latest: latest.getLatest() });
+            res.render('index', { account_number: count, steem_transfered: transfers.getSteemAmountSent(), sbd_transfered: 0, latest: latest.getLatest() });
         } else {
-            res.render('index', { account_number: 0, steem_transfered: 0, sbd_transfered: 0, latest: latest.getLatest() });
+            res.render('index', { account_number: 0, steem_transfered: transfers.getSteemAmountSent(), sbd_transfered: 0, latest: latest.getLatest() });
         }
     })
 });
@@ -180,7 +181,7 @@ router.get('/moderate', (req, res, next) => {
             if (!err) {
                 Posts.find({ status: 'published', created: false }, function (err, published) {
                     if (!err) {
-                        res.render('moderate', { posts: posts, published: published });
+                        res.render('moderate', { posts: posts, published: published, admin: req.session.admin });
                     } else {
                         res.redirect('/');
                     }
@@ -484,6 +485,9 @@ router.post('/login', (req, res) => {
                         req.session.verified = user.verified;
                         if(user.moderator) {
                             req.session.moderator = true;
+                        }
+                        if(user.admin) {
+                            req.session.admin = true;
                         }
                         res.json({success: 'Logged in successfully'});
                     } else {
