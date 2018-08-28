@@ -9,6 +9,7 @@ const isImage = require('is-image');
 let Users = require('../models/users.js');
 let Posts = require('../models/posts.js');
 let utils = require('../modules/utils.js');
+let mailing = require('../modules/mailing.js');
 let latest = require('../modules/latest-posts.js');
 let transfers = require('../modules/transfers.js');
 
@@ -150,7 +151,7 @@ router.post('/create-account', (req, res, next) => {
                                                         user.created = true;
                                                         user.save((err)=>{
                                                             if (!err) {
-                                                                utils.sendInformationAfterAccountCreated(user.email, (err, info) => {
+                                                                mailing.sendInformationAfterAccountCreated(user.email, (err, info) => {
                                                                     console.log(err, info);
                                                                     utils.commentAddAccountCreatedInfo(post, user, (err, response) => {
                                                                         console.log(err, response);
@@ -239,7 +240,7 @@ router.post('/register', (req, res) => {
                         console.log(err);
                         res.json({ error: "Something went wrong. Try again" });
                     } else {
-                        utils.sendActivationEmail(user.email, user.token, function(err, info){
+                        mailing.sendActivationEmail(user.email, user.token, function(err, info){
                             if (err) {
                                 console.log('Error: ' + err);
                                 res.json({ error: "Error occured. Try again" });
@@ -315,7 +316,7 @@ router.post('/reject', (req, res) => {
                     post.status = 'rejected';
                     post.save((err)=>{
                         if(!err) {
-                            utils.sendRejectedInformation(post.email, req.body.reason, function(err) {
+                            mailing.sendRejectedInformation(post.email, req.body.reason, function(err) {
                                 if(!err) {
                                     console.log("Rejected email sent to author");
                                     res.json({success: "Post rejected successfully"});
@@ -401,7 +402,7 @@ router.post('/add', (req, res) => {
                         Users.find({moderator: true}, (err, users) => {
                             if(!err && users.length) {
                                 users.forEach((user)=>{
-                                    utils.moderatorInformAboutNewPost(user.email, (err) => {
+                                    mailing.moderatorInformAboutNewPost(user.email, (err) => {
                                         if(!err) {
                                             console.log('Mail sent to moderator');
                                         }
@@ -467,7 +468,7 @@ router.post('/publish', (req, res) => {
                         utils.publishPostOnSteem(post, function(err, result) {
                             if(!err) {
                                 post.save((err) => {
-                                    utils.sendInformationAfterPostPublished(post.email, 'https://steemit.com/@' + process.env.STEEM_USERNAME + '/' + post.permlink, (err, info) => {
+                                    mailing.sendInformationAfterPostPublished(post.email, 'https://steemit.com/@' + process.env.STEEM_USERNAME + '/' + post.permlink, (err, info) => {
                                         console.log(err, info)
                                         res.json({success: 'Post has been published'});
                                     });
@@ -554,7 +555,7 @@ router.post('/resend', (req, res) => {
     if(req.body.email && req.body.email != '') {
         Users.findOne({email: req.body.email}, function(err, user) {
             if(!err && user) {
-                utils.sendActivationEmail(user.email, user.token, function(err, info){
+                mailing.sendActivationEmail(user.email, user.token, function(err, info){
                     if (err) {
                         console.log('Error: ' + err);
                         res.json({ error: "Error occured. Try again" });
