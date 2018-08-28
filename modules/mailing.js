@@ -27,29 +27,40 @@ module.exports.sendActivationEmail = (email, token, callback) => {
 }
 
 module.exports.sendInformationAfterAccountCreated = (email, callback) => {
+
+    let accountCreated = fs.readFileSync('modules/emails/account-created.html', 'utf-8');
+
     nodemailerMailgun.sendMail({
         from: { name: 'Steemfounders', address: 'noreplay@steemfounders.com' },
         to: email,
         subject: 'Your new Steem account is ready!',
-        html: 'Hello,<br>we just created shining new account especially for You! Login at Steemfounders go get details.<br><br><a href="https://steemfounders.com/dashboard">Click here to get your account details</a><br><br>Steemfounders Team',
+        html: accountCreated,
     }, callback);
 }
 
 module.exports.sendInformationAfterPostPublished = (email, post_link, callback) => {
+
+    let postPublished = fs.readFileSync('modules/emails/post-published.html', 'utf-8');
+    postPublished = postPublished.replace("{LINK}", post_link);
+
     nodemailerMailgun.sendMail({
         from: { name: 'Steemfounders', address: 'noreplay@steemfounders.com' },
         to: email,
         subject: 'Your introducing post is now published',
-        html: 'Hi,<br>we are glad to say that your intruducing post has been accepted by one of ours moderators and is now published on Steem!<br><br><a href=\"' + post_link + '\">Click here to read your post on Steemit</a><br><br>Steemfounders Team',
+        html: postPublished,
     }, callback);
 }
 
 module.exports.sendRejectedInformation = (email, reason, callback) => {
+
+    let postRejected = fs.readFileSync('modules/emails/post-rejected.html', 'utf-8');
+    postRejected = postRejected.replace("{REASON}", reason);
+
     nodemailerMailgun.sendMail({
         from: { name: 'Steemfounders', address: 'noreplay@steemfounders.com' },
         to: email,
         subject: 'Your post has been rejected',
-        html: 'Hi,<br>we are sorry to say that but your intruducing post has been rejected by one of ours moderators and it won\'t be published.<br><br>Here you can read moderator\'s explanation:<br><br><blockquote>' + reason + '</blockquote><br><br>You can contact with us using <a href=\"https://discord.gg/8NktdFh\">Discord</a>.<br>Steemfounders Team',
+        html: postRejected,
     }, callback);
 }
 
