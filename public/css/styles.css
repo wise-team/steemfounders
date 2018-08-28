@@ -1940,3 +1940,11 @@ button[disabled] {
     background: #afbfd0;
     pointer-events: none;
 }
+
+#assign-moderator {
+    margin-top: 0px;
+}
+
+#fukako-link {
+    color: white;
+}
