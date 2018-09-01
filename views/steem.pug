@@ -3,7 +3,9 @@ extends website.pug
 block header
   title #{__('What is Steem - Steemfounders')}
 
-
+append scripts
+    script(src='/js/main.js')
+    
 block body
     include partials/navbar.pug
 
