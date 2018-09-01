@@ -27,8 +27,6 @@ i18n.configure({
     directory: __dirname + '/locales'
 });
 
-console.log(i18n.__('Hello'));
-
 let app = express();
 
 app.use(session({

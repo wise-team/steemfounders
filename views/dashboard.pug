@@ -79,13 +79,16 @@ block body
                                 else if post.status == 'published'
                                     h3 #{__('You post has been published. Take a look how it\'s going ;)')}
                                     a(href=post.permlink) #{__('Read it on Steemit')}
+                                else if post.status == 'rejected'
+                                    h3 #{__('Unfortunatelly your post has been rejected. If you think that was made by mistake - contact our moderators via Discord.')}
+
                                 .row.pt-100
                                     .col-md-5.col-xs-12.hidden-xs.hidden-sm
                                         .case-details-img
                                             if post.image
                                                 img.post-thumbnail(src=post.image, alt='')
                                             else
-                                                img.post-thumbnail(src='/images/case/case-details2.png', alt='')
+                                                img.post-thumbnail(src='/images/default.png', alt='')
                                     .col-md-6.col-md-offset-1.col-xs-12
                                         .case-details-wrap
                                             h2= post.title
@@ -99,7 +102,7 @@ block body
                                 label #{__('Your private Steem keys:')}
                                 textarea(rows=10, type='text', readonly=true)= JSON.stringify({posting: user.steem_keys.posting, active: user.steem_keys.active, owner: user.steem_keys.owner, memo: user.steem_keys.memo}, null, 4)
 
-                                p #{__('Don't share this keys with anyone. Consider it as your bank account's password.')}
+                                p #{__('Don\'t share this keys with anyone. Consider it as your bank account\'s password.')}
 
                                 p #{__('You can login here:')}
                                     a(href='https://steemit.com/login.html', target='_blank') #{__('STEEMIT LOGIN PAGE')}

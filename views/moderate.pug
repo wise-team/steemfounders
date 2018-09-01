@@ -77,7 +77,7 @@ block body
                                             if post.image
                                                 img.post-thumbnail(src=post.image, alt='')
                                             else
-                                                img.post-thumbnail(src='/images/case/case-details2.png', alt='')
+                                                img.post-thumbnail(src='/images/default.png', alt='')
                                     .col-md-5.col-xs-12
                                         .case-details-wrap
                                             h2= post.title
@@ -104,7 +104,7 @@ block body
                                             if post.image
                                                 img.post-thumbnail(src=post.image, alt='')
                                             else
-                                                img.post-thumbnail(src='/images/case/case-details2.png', alt='')
+                                                img.post-thumbnail(src='/images/default.png', alt='')
                                     .col-md-5.col-xs-12
                                         .case-details-wrap
                                             a(href='https://steemit.com/@'+ process.env.STEEM_USERNAME + '/' + post.permlink)
@@ -128,7 +128,7 @@ block body
                                 .row
                                     .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-2.col-xs-12
                                         .newsletter-wrap
-                                            label(for='#assign-moderator') #{__('Type e-mail address you want to assign as a moderator:')}'
+                                            label(for='#assign-moderator') #{__('Type e-mail address you want to assign as a moderator:')}
                                             form#assign-mod-form
                                                 input#assign-mod-email(type='email', placeholder='E-mail address here', name='email', required=true)
                                                 button(type='submit', name='button')#assign-moderator #{__('Assign moderator')}
