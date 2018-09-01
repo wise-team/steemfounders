@@ -20,8 +20,6 @@ html.no-js(lang='en')
             link(rel='stylesheet', href='/css/parsley.css')
 
         block header
-    
-        script(src='/js/vendor/modernizr-2.8.3.min.js')
 
     #login-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true', style='display: none;')
         .modal-dialog
@@ -40,6 +38,7 @@ html.no-js(lang='en')
     block body
   
     block scripts
+        script(src='/js/vendor/modernizr-2.8.3.min.js')
         script(src='/js/vendor/jquery-1.12.4.min.js')
         script(src='/js/bootstrap.min.js')
         script(src='/js/bootstrap-notify.js')

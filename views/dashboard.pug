@@ -98,10 +98,6 @@ block body
                                 input(type='text', readonly=true, value= user.steem_password)
                                 label Your private Steem keys:
                                 textarea(rows=10, type='text', readonly=true)= JSON.stringify({posting: user.steem_keys.posting, active: user.steem_keys.active, owner: user.steem_keys.owner, memo: user.steem_keys.memo}, null, 4)
-                                    //- = 'posting: ' + user.steem_keys.posting
-                                    //- = '\nactive: ' + user.steem_keys.active
-                                    //- = '\nowner: ' + user.steem_keys.owner
-                                    //- = '\nmemo: ' + user.steem_keys.memo
 
                                 p Don't share this keys with anyone. Consider it as your bank account's password.
 
