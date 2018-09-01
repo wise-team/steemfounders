@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 const dynamicStatic = require('express-dynamic-static')(); // immediate initialization
 
 mongoose.connection.on('error', function (err) { console.log(err) });
-mongoose.connect(process.env.DATABASE_URL);
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 
 let express = require('express');
 let i18n = require("i18n");

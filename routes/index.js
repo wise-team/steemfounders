@@ -14,7 +14,7 @@ let latest = require('../modules/latest-posts.js');
 let transfers = require('../modules/transfers.js');
 
 router.get('/', (req, res, next) => {
-    Posts.count({created: true}, (err, count)=>{
+    Posts.countDocuments({created: true}, (err, count)=>{
         if(!err && count) {
             res.render('index', { account_number: count, steem_transfered: transfers.getSteemAmountSent(), sbd_transfered: 0, latest: latest.getLatest() });
         } else {
