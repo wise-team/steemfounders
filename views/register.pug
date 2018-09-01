@@ -1,7 +1,7 @@
 extends website.pug
 
 block header
-  title Register - Steemfounders
+  title #{__('Register - Steemfounders')}
 
 append scripts
     script(src='/js/main.js')
@@ -15,14 +15,14 @@ block body
             .row
                 .col-xs-12
                     .breadcumb-wrap.text-center
-                        h2 Finish registration
+                        h2 #{__('Finish registration')}
 
     .contact-area.pt-100
         .container
             .row
                 .col-md-12.col-xs-12
                     .contact-wrap
-                        h3 Finish registration
+                        h3 #{__('Finish registration')}
                         .cf-msg
                         form#rf(action='/finish', method='POST')
                             .row
@@ -35,14 +35,14 @@ block body
                                     p#info
                                 .col-xs-12.col-sm-6
                                     select(required=true, name='community')#community
-                                        option(selected= true, disabled=true, hidden= true) Preffered language
-                                        option(value='en') English
-                                        option(value='pl') Polish
-                                        option(value='jp') Japanese
-                                        option(value='idn') Indonesian
-                                        option(value='kr') Korean
-                                        option(value='sp') Spanish
-                                        option(value='other') Other
+                                        option(selected= true, disabled=true, hidden= true) #{__('Preffered language')}
+                                        option(value='en') #{__('English')}
+                                        option(value='pl') #{__('Polish')}
+                                        option(value='jp') #{__('Japanese')}
+                                        option(value='idn') #{__('Indonesian')}
+                                        option(value='kr') #{__('Korean')}
+                                        option(value='sp') #{__('Spanish')}
+                                        option(value='other') #{__('Other')}
                                     p#info
                                 .col-xs-12
-                                    button#submit.cont-submit.btn-contact(name='submit') Let's start
+                                    button#submit.cont-submit.btn-contact(name='submit') #{__('Let\'s start')}

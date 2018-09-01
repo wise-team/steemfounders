@@ -1,7 +1,7 @@
 extends website.pug
 
 block header
-  title Steemfounders
+  title #{__('Steemfounders')}
 
 append scripts
     script(src='/js/main.js')
@@ -16,19 +16,19 @@ block body
         .container
           .row
             .col-md-6.col-sm-10.col-xs-12
-              h2 Steem needs valuable users. Steem needs you!
-              p
-                | We want to make it easier for new and valuable creators to quickly create their accounts so that they can share their content with us and monetize it. Here we will let you publish your first post to fund new account as soon as possible.
+            
+              h2 #{__('Steem needs valuable users. Steem needs you!')}
+              p #{__('We want to make it easier for new and valuable creators to quickly create their accounts so that they can share their content with us and monetize it. Here we will let you publish your first post to fund new account as soon as possible')}
               ul
                 li
-                  a(href='#introduce') Introduce Yourself
+                  a(href='#introduce') #{__('Introduce Yourself')}
                 li
                   a(href='https://signup.steemit.com/')
-                    | Or use Steemit
+                    | #{__('Or use Steemit')}
                     i.fa.fa-long-arrow-right
             .col-md-6.text-right.hidden-sm.hidden-xs
               img(src='/images/steemfounders.png', alt='Steemfounders by @fukako')
-              p by 
+              p #{__('by')}
                 a(href="https://steemit.com/@fukako")#fukako-link @fukako
 
     .pricing-table-area
@@ -36,31 +36,25 @@ block body
         .row
           .col-md-6.col-md-offset-3.col-sm-10.col-sm-offset-1.col-xs-12
             .section-title.text-center
-              h2 How it works
-              p
-                | Steemfounders allows you to publish your first post here without having an account. Try to make it as good as possible - at Steemit we reward interesting creators and it will depend on how quickly your account will be created (however, it should not take longer than 24 hours).
+              h2 #{__('How it works')}
+              p #{__('Steemfounders allows you to publish your first post here without having an account. Try to make it as good as possible - at Steemit we reward interesting creators and it will depend on how quickly your account will be created (however, it should not take longer than 24 hours).')}
         .row
           .col-md-4.col-sm-6.col-xs-12
             .service-wrap.text-center
-              h3 You introduce yourself
+              h3 #{__('You introduce yourself')}
               img(src='/images/service/1.png', alt='')
-              p
-                | All you have to do is write your first post here - if it is good enough, your account will be opened even today. Remember - this post should be your trademark, try to be as good as possible
+              p #{__('All you have to do is write your first post here - if it is good enough, your account will be opened even today. Remember - this post should be your trademark, try to be as good as possible')}
           .col-md-4.col-sm-6.col-xs-12
             .service-wrap.text-center
-              h3 We fund your new account
+              h3 !{__('We fund your new account')}
               img(src='/images/service/2.png', alt='')
-              p
-                | If your post looks good, we take the risk and finance a new account especially for you. You will receive all the access keys to this account. This will be 
-                strong YOUR
-                |  account, ready to publish your next materials immediately.
+              p #{__('If your post looks good, we take the risk and finance a new account especially for you. You will receive all the access keys to this account. This will be YOUR account, ready to publish your next materials immediately.')}
 
           .col-md-4.col-sm-6.col-xs-12
             .service-wrap.text-center
-              h3 You receive all rewards
+              h3 #{__('You receive all rewards')}
               img(src='/images/service/3.png', alt='')
-              p
-                | We want to be fair with our users, so after 7 days, when your work will be settled, we transfer the tokens earned by you to your wallet. It will be yours and you will be able to withdraw them or invest in account power
+              p #{__('We want to be fair with our users, so after 7 days, when your work will be settled, we transfer the tokens earned by you to your wallet. It will be yours and you will be able to withdraw them or invest in account power')}
 
     .quote-area
       .particleground
@@ -68,8 +62,7 @@ block body
         .row
           .col-md-7
             .quote-wrap
-              p
-                | Every successful individual knows that his or her achievement depends on a community of persons working together.
+              p #{__('Every successful individual knows that his or her achievement depends on a community of persons working together.')}
 
     .fanfact-area.pricing-table-area
       .container
@@ -78,17 +71,17 @@ block body
           .col-md-4.col-sm-12.col-xs-12
             .fanfact-wrap
               h2.counter= account_number
-              p Accounts funded
+              p #{__('Accounts funded')}
           .col-md-4.col-sm-12.col-xs-12
             .fanfact-wrap
               h2.counter= steem_transfered
-              p STEEM tokens transfered
+              p #{__('STEEM tokens transfered')}
     .expert-area
       .container
         .row
           .col-md-6.col-md-offset-3.col-sm-10.col-sm-offset-1.col-xs-12
             .section-title.text-center
-              h2 Latest posts
+              h2 #{__('Latest posts')}
         .row
           each post in latest
             .col-md-4.col-sm-6.col-xs-12
@@ -97,24 +90,23 @@ block body
                   img(src=post.image, alt='')
                 .blog-content
                   h3= post.title
-                  a(href='https://steemit.com/@steemfounders/' + post.permlink) Read on Steemit
+                  a(href='https://steemit.com/@steemfounders/' + post.permlink) #{__('Read on Steemit')}
 
     #introduce.pricing-table-area
       .container
         .row
           .col-md-6.col-md-offset-3.col-sm-10.col-sm-offset-1.col-xs-12
             .section-title.text-center
-              h2 Introduce yourself
-              p
-                | First of all you need to authenticate your account. Just type your email into form below. Don't worry, we hate spam too, so we will use your e-mail only for sending information about accepting your post and creating account. It won't be shared with anyone. Never.
+              h2 #{__('Introduce yourself')}
+              p #{__('First of all you need to authenticate your account. Just type your email into form below. Don\'t worry, we hate spam too, so we will use your e-mail only for sending information about accepting your post and creating account. It won\'t be shared with anyone. Never.')}
 
-              p If you cant see registration form below, please try disabling your ad-blocking extensions.
+              p #{__('If you cant see registration form below, please try disabling your ad-blocking extensions.')}
         .row
           .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-2.col-xs-12
             .newsletter-wrap
               form#register
                 input#new-mail(type='email', placeholder='Your email here', name='email')
-                button(type='submit', name='button') Send activation link
+                button(type='submit', name='button') #{__('Send activation link')}
     
     block footer
       include partials/footer.pug

@@ -10,23 +10,23 @@ header.header-area
             .mainmenu.text-right
               ul#navigation
                 li
-                  a(href='/') Home
+                  a(href='/') #{__('Home')}
                 li
-                  a(href='steem') What is Steem
+                  a(href='steem') #{__('What is Steem')}
                 li
-                  a(href='https://steemit.com/steemit/@steemfounders/introducing-steemfounders-a-new-free-method-of-creating-accounts') About Steemfounders
+                  a(href='https://steemit.com/steemit/@steemfounders/introducing-steemfounders-a-new-free-method-of-creating-accounts') #{__('About Steemfounders')}
                 li
-                  a(href='https://discord.gg/8NktdFh') Our Discord
+                  a(href='https://discord.gg/8NktdFh') #{__('Our Discord')}
                 if email
                   li
-                    a(href='/logout') Logout
+                    a(href='/logout') #{__('Logout')}
           
           .col-md-2.col-sm-3.col-xs-9
             .free-seo.text-right
               if ! email
-                button(type='button', name='button' data-toggle="modal" data-target="#login-modal") Login and check
+                button(type='button', name='button' data-toggle="modal" data-target="#login-modal") #{__('Login and check')}
               else 
                 a(href='/dashboard')
-                  button(type='button', name='button') Dashboard
+                  button(type='button', name='button') #{__('Dashboard')}
           .col-sm-1.clear.col-xs-3.hidden-md.hidden-lg
             .responsive-menu-wrap.floatright

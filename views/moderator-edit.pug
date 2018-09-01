@@ -1,7 +1,7 @@
 extends website.pug
 
 block header
-  title Edit and publish - Steemfounders
+  title #{__('Edit and publish - Steemfounders')}
 
 append stylesheets
     link(rel='stylesheet', href='/css/simplemde.css')
@@ -16,13 +16,13 @@ block body
             .modal-content
                 .modal-header.justify-content-center
                 .modal-body.text-center
-                    p You are about to publish new blog post to Steem blockchain
+                    p #{__('You are about to publish new blog post to Steem blockchain')}
                     hr
-                    h4 Please be aware that you may not be able to delete it later
+                    h4 #{__('Please be aware that you may not be able to delete it later')}
 
                 .modal-footer
-                    button.btn.btn-simple(type='button', data-dismiss='modal') Back
-                    button.btn.btn-success.btn-fill#btn-publish(type='button') Publish
+                    button.btn.btn-simple(type='button', data-dismiss='modal') #{__('Back')}
+                    button.btn.btn-success.btn-fill#btn-publish(type='button') #{__('Publish')}
 
     include partials/navbar.pug
 
@@ -32,7 +32,7 @@ block body
             .row
                 .col-xs-12
                     .breadcumb-wrap.text-center
-                        h2 Edit and publish
+                        h2 #{__('Edit and publish')}
 
     .contact-area.pt-100
         .container
@@ -43,27 +43,27 @@ block body
                             input#_id(type='hidden', name='_id', value=post._id)
                             .row
                                 .col-xs-12.col-sm-12
-                                    label Post title:
+                                    label #{__('Post title:')}
                                     input#post-title(type='text', name='title', required="", placeholder='Title...', value= post.title)
                                 .col-xs-12.col-sm-12
-                                    label Post body:
+                                    label #{__('Post body:')}
                                     textarea#post-body(type='text', name='body', required='', placeholder='Body...')= post.body
                                 .col-xs-12.col-sm-12
-                                    label Thumbnail URL (optional):
+                                    label #{__('Thumbnail URL (optional):')}
                                     input#post-title(type='text', name='image', placeholder='https://...', value= post.image)
                                 .col-xs-12.col-sm-12
-                                    label User interests (readonly, you should decide which tags should be used):
+                                    label #{__('User interests (readonly, you should decide which tags should be used):')}
                                     input#post-interests(type='text', disabled='', value= post.tags)
                                 
                                 .col-xs-12.col-sm-12
-                                    label Steem tags for new post:
+                                    label #{__('Steem tags for new post:')}
                                     input#post-title(type='text', name='tags', required="", value= 'steemfounders')
                                 
                                 .col-xs-12.col-sm-12
-                                    label Moderator username (without @)
+                                    label #{__('Moderator username (without @)')}
                                     input#moderator(type='text', name='moderator', required="", value= '', placeholder='username')
                                 .col-xs-12
-                                    button#submit.cont-submit.btn-contact.btn-func-publish(disabled= (post.status == 'published'), type='button') Publish
+                                    button#submit.cont-submit.btn-contact.btn-func-publish(disabled= (post.status == 'published'), type='button') #{__('Publish')}
 
     block footer
         .contact-area.pt-100

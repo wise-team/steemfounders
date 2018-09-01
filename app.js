@@ -7,6 +7,7 @@ mongoose.connection.on('error', function (err) { console.log(err) });
 mongoose.connect(process.env.DATABASE_URL);
 
 let express = require('express');
+let i18n = require("i18n");
 let path = require('path');
 let favicon = require('serve-favicon');
 let logger = require('morgan');
@@ -20,6 +21,13 @@ var latest = require('./modules/latest-posts.js');
 var transfers = require('./modules/transfers.js');
 
 console.log("Launched on " + moment().format("LLLL"));
+
+i18n.configure({
+    defaultLocale: 'en',
+    directory: __dirname + '/locales'
+});
+
+console.log(i18n.__('Hello'));
 
 let app = express();
 
@@ -49,8 +57,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressSanitized.middleware());
 app.use(cookieParser());
-
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(i18n.init);
 app.use(dynamicStatic);
 
 dynamicStatic.setPath(path.join(__dirname, 'public'));

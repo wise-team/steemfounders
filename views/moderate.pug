@@ -1,7 +1,7 @@
 extends website.pug
 
 block header
-  title Moderator panel - Steemfounders
+  title #{__('Moderator panel - Steemfounders')}
 
 append scripts
     script(src='/js/moderate.js')
@@ -13,41 +13,41 @@ block body
             .modal-content
                 .modal-header.justify-content-center
                 .modal-body.text-center
-                    p You are about to reject this post. Say why:
+                    p #{__('You are about to reject this post. Say why:')}
                     .form-group
-                        label.col-form-label(for='reason') Reason:
+                        label.col-form-label(for='reason') #{__('Reason:')}
                         textarea#reason(rows=4, required=true).form-control
 
                 .modal-footer
-                    button.btn.btn-simple(type='button', data-dismiss='modal') Back
-                    button.btn.btn-danger.btn-fill#btn-reject(type='button') Reject
+                    button.btn.btn-simple(type='button', data-dismiss='modal') #{__('Back')}
+                    button.btn.btn-danger.btn-fill#btn-reject(type='button') #{__('Reject')}
 
     #createAccountModal.modal.fade.modal.modal-primary(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-dialog
             .modal-content
                 .modal-header.justify-content-center
                 .modal-body.text-center
-                    p You are about to create new account
+                    p #{__('You are about to create new account')}
                     hr
-                    h4 Please be aware that it cost 3 STEEM and it cannot be undone
+                    h4 #{__('Please be aware that it cost 3 STEEM and it cannot be undone')}
 
 
                 .modal-footer
-                    button.btn.btn-simple(type='button', data-dismiss='modal') Back
-                    button.btn.btn-success.btn-fill#btn-create(type='button') Create new account
+                    button.btn.btn-simple(type='button', data-dismiss='modal') #{__('Back')}
+                    button.btn.btn-success.btn-fill#btn-create(type='button') #{__('Create new account')}
     #hideEntryModal.modal.fade.modal.modal-primary(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-dialog
             .modal-content
                 .modal-header.justify-content-center
                 .modal-body.text-center
-                    p You are about to hide this entry
+                    p #{__('You are about to hide this entry')}
                     hr
-                    h4 Please be aware you won't see it again. Should be used only when post not earned enough to create new account.
+                    h4 #{__('Please be aware you won\'t see it again. Should be used only when post not earned enough to create new account.')}
 
 
                 .modal-footer
-                    button.btn.btn-simple(type='button', data-dismiss='modal') Back
-                    button.btn.btn-danger.btn-fill#btn-hide(type='button') Hide
+                    button.btn.btn-simple(type='button', data-dismiss='modal') #{__('Back')}
+                    button.btn.btn-danger.btn-fill#btn-hide(type='button') #{__('Hide')}
 
     include partials/navbar.pug
 
@@ -57,17 +57,17 @@ block body
             .row
                 .col-xs-12
                     .breadcumb-wrap.text-center
-                        h2 Moderator panel
+                        h2 #{__('Moderator panel')}
     .contact-area.pt-100
         .container
             .row
                 .col-md-12.col-xs-12
                     .contact-wrap
                         if !published.length && !posts.length
-                            h2 No posts to moderate at the moment
+                            h2 #{__('No posts to moderate at the moment')}
 
                         if posts.length   
-                            h2 Posts to moderate 
+                            h2 #{__('Posts to moderate')}
                             hr            
                             each post in posts
                                 .row.pt-100
@@ -88,13 +88,13 @@ block body
                                     .col-md-2.col-xs-12
                                         .btn-group-vertical
                                             a(href='/edit/' + post._id)
-                                                button.btn.btn-success(type='button') Edit and publish
+                                                button.btn.btn-success(type='button') #{__('Edit and publish')}
                                             a(disabled=true)
-                                                button.btn.btn-danger.btn-func-reject(type='button') Reject
+                                                button.btn.btn-danger.btn-func-reject(type='button') #{__('Reject')}
                             hr
                         
                         if published.length
-                            h2.pt-100 Already published but without account created
+                            h2.pt-100 #{__('Already published but without account created')}
                             hr                  
                             each post in published
                                 .row.pt-100
@@ -115,23 +115,23 @@ block body
                                     .col-md-2.col-xs-12
                                         .btn-group-vertical
                                             a
-                                                button.btn.btn-success.create-account(type='button') Create account
-                                                button.btn.btn-danger.hide-entry(type='button') Hide
+                                                button.btn.btn-success.create-account(type='button') #{__('Create account')}
+                                                button.btn.btn-danger.hide-entry(type='button') #{__('Hide')}
             if admin == true
                 .row.pt-100
                     .col-md-12.col-xs-12.pt-100
                         .contact-wrap
-                            h2.pt-500 Admin tools
+                            h2.pt-500 #{__('Admin tools')}
                             hr  
                         
                             .container
                                 .row
                                     .col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-2.col-xs-12
                                         .newsletter-wrap
-                                            label(for='#assign-moderator') Type e-mail address you want to assign as a moderator:
+                                            label(for='#assign-moderator') #{__('Type e-mail address you want to assign as a moderator:')}'
                                             form#assign-mod-form
                                                 input#assign-mod-email(type='email', placeholder='E-mail address here', name='email', required=true)
-                                                button(type='submit', name='button')#assign-moderator Assign moderator
+                                                button(type='submit', name='button')#assign-moderator #{__('Assign moderator')}
 
     block footer
         .contact-area.pt-100

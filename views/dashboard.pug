@@ -1,7 +1,7 @@
 extends website.pug
 
 block header
-  title Dashboard - Steemfounders
+  title #{__('Dashboard')} - Steemfounders
 
 append stylesheets
     link(rel='stylesheet', href='/css/simplemde.css')
@@ -18,7 +18,7 @@ block body
             .row
                 .col-xs-12
                     .breadcumb-wrap.text-center
-                        h2 Hello, #{email}
+                        h2 #{__('Hello')}, #{email}
 
     .contact-area.pt-100
         .container
@@ -26,11 +26,11 @@ block body
                 .col-md-12.col-xs-12
                     .contact-wrap
                         if ! post
-                            h3 Write your introduce post
+                            h3 #{__('Write your introduce post')}
 
                             hr
 
-                            h3 To get best results please read: 
+                            h3 #{__('To get best results please read:')}
                                 ul.tips-list
                                     case user.community
                                         when "pl"
@@ -59,26 +59,26 @@ block body
                             form#post(action='/add', method='POST')
                                 .row
                                     .col-xs-12.col-sm-8
-                                        label Your post title:
+                                        label #{__('Your post title:')}
                                         input#post-title(type='text', name='title', required="", placeholder='Title...')
                                     .col-xs-12.col-sm-12
-                                        label Post body:
+                                        label #{__('Post body:')}
                                         textarea#post-body(type='text', name='body', required='', placeholder='Body...')
                                     .col-xs-12.col-sm-12
-                                        label Thumbnail URL (optional):
+                                        label #{__('Thumbnail URL (optional):')}
                                         input#post-title(type='text', name='image', placeholder='https://...')
                                     .col-xs-12.col-sm-12
-                                        label You interests (as tags):
+                                        label #{__('You interests (as tags):')}
                                         input#post-title(type='text', name='tags', required="", placeholder='first second ...')
                                     .col-xs-12
-                                        button#submit.cont-submit.btn-contact(name='submit') Submit
+                                        button#submit.cont-submit.btn-contact(name='submit') #{__('Submit')}
                         else
                             if !post.created
                                 if post.status == 'added'
-                                    h3 You successfully submitted your post. Wait for information from our moderators :)
+                                    h3 #{__('You successfully submitted your post. Wait for information from our moderators :)')}
                                 else if post.status == 'published'
-                                    h3 You post has been published. Take a look how it's going ;)
-                                    a(href=post.permlink) Read it on Steemit
+                                    h3 #{__('You post has been published. Take a look how it\'s going ;)')}
+                                    a(href=post.permlink) #{__('Read it on Steemit')}
                                 .row.pt-100
                                     .col-md-5.col-xs-12.hidden-xs.hidden-sm
                                         .case-details-img
@@ -91,18 +91,18 @@ block body
                                             h2= post.title
                                             p= post.body.substring(200,0) + '...'
                             else
-                                h3 Your account has been created! Here you have all neccessary data:
-                                label Your Steem account:
+                                h3 #{__('Your account has been created! Here you have all neccessary data:')}
+                                label #{__('Your Steem account:')}
                                 input(type='text', readonly=true, value= user.account)
-                                label Your Steem account password:
+                                label #{__('Your Steem account password:')}
                                 input(type='text', readonly=true, value= user.steem_password)
-                                label Your private Steem keys:
+                                label #{__('Your private Steem keys:')}
                                 textarea(rows=10, type='text', readonly=true)= JSON.stringify({posting: user.steem_keys.posting, active: user.steem_keys.active, owner: user.steem_keys.owner, memo: user.steem_keys.memo}, null, 4)
 
-                                p Don't share this keys with anyone. Consider it as your bank account's password.
+                                p #{__('Don't share this keys with anyone. Consider it as your bank account's password.')}
 
-                                p You can login here: 
-                                    a(href='https://steemit.com/login.html', target='_blank') STEEMIT LOGIN PAGE
+                                p #{__('You can login here:')}
+                                    a(href='https://steemit.com/login.html', target='_blank') #{__('STEEMIT LOGIN PAGE')}
     block footer
         .contact-area.pt-100
             .contact-area.pt-100

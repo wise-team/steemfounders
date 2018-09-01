@@ -24,16 +24,16 @@ html.no-js(lang='en')
     #login-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true', style='display: none;')
         .modal-dialog
             .loginmodal-container
-                h1 Login to Your Account
+                h1 #{__('Login to Your Account')}
                 br
                 form#login
                     input(type='email', name='email', placeholder='E-mail')
                     input(type='password', name='password', placeholder='Password')
                     input.login.loginmodal-submit(type='submit', name='login', value='Login')
                 .login-help
-                    a(href='/#introduce') Register
+                    a(href='/#introduce') #{__('Register')}
                     |  - 
-                    a(href='#') Forgot Password
+                    a(href='#') #{__('Forgot Password')}
 
     block body
   
