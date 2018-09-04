@@ -27,7 +27,7 @@ function countTransfersFromBlockchain () {
                     }
                 }
             })
-            SteemAmountSent = sum;
+            SteemAmountSent = sum.toFixed(3);
         }
     });
 }
