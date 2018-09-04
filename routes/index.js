@@ -16,15 +16,15 @@ let transfers = require('../modules/transfers.js');
 router.get('/', (req, res, next) => {
     Posts.countDocuments({created: true}, (err, count)=>{
         if(!err && count) {
-            res.render('index', { account_number: count, steem_transfered: transfers.getSteemAmountSent(), sbd_transfered: 0, latest: latest.getLatest() });
+            res.render('index', { account_number: count, steem_transfered: transfers.getSteemAmountSent(), latest: latest.getLatest() });
         } else {
-            res.render('index', { account_number: 0, steem_transfered: transfers.getSteemAmountSent(), sbd_transfered: 0, latest: latest.getLatest() });
+            res.render('index', { account_number: 0, steem_transfered: transfers.getSteemAmountSent(), latest: latest.getLatest() });
         }
     })
 });
 
 router.get('/steem', (req, res, next) => {
-    res.render('steem', { account_number: 15, steem_transfered: 54, sbd_transfered: 23 });
+    res.render('steem');
 });
 
 router.get('/dashboard', (req, res, next) => {
