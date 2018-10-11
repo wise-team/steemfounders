@@ -4,7 +4,7 @@ let steem = require('steem');
 let SteemAmountSent = 0;
 
 module.exports.initialize = () => {
-    console.log("Transfers module initialized");
+    console.log(" * Transfers module initialized");
     countTransfersFromBlockchain();
     new CronJob('*/10 * * * *', function () { countTransfersFromBlockchain() }, null, true, 'America/Los_Angeles');
 }

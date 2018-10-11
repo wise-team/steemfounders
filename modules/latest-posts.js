@@ -41,6 +41,6 @@ function FetchLatestFromBlockchain() {
 }
 
 module.exports.initialize = () => {
-    console.log("Latest posts module initialized");
+    console.log(" * Latest posts module initialized");
     new CronJob('* * * * *', function () { FetchLatestFromBlockchain() }, null, true, 'America/Los_Angeles');
 }

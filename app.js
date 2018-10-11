@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 const dynamicStatic = require('express-dynamic-static')(); // immediate initialization
 
 mongoose.connection.on('error', function (err) { console.log(err) });
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
+mongoose.connect(process.env.DATABASE_URL ? process.env.DATABASE_URL : 'mongodb://mongo:27017/steemfounders', { useNewUrlParser: true });
 
 let express = require('express');
 let i18n = require("i18n");
@@ -89,8 +89,8 @@ let debug = require('debug')('boilerplate:server');
  * Create HTTP server.
  */
 var http = require('http');
-let server = http.createServer(app).listen(parseInt(process.env.PORT));
-let port = normalizePort(process.env.PORT);
+let server = http.createServer(app).listen(parseInt(process.env.PORT || 8080));
+let port = normalizePort(process.env.PORT || 8080);
 app.set('port', port);
 
 server.on('error', onError);
