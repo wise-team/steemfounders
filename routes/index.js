@@ -14,8 +14,8 @@ let latest = require('../modules/latest-posts.js');
 let transfers = require('../modules/transfers.js');
 
 router.get('/', (req, res, next) => {
-    Posts.countDocuments({created: true}, (err, count)=>{
-        if(!err && count) {
+    Posts.countDocuments({ created: true }, (err, count) => {
+        if (!err && count) {
             res.render('index', { account_number: count, steem_transfered: transfers.getSteemAmountSent(), latest: latest.getLatest() });
         } else {
             res.render('index', { account_number: 0, steem_transfered: transfers.getSteemAmountSent(), latest: latest.getLatest() });
@@ -29,27 +29,27 @@ router.get('/steem', (req, res, next) => {
 
 router.get('/dashboard', (req, res, next) => {
     if (req.session.email) {
-        if(!req.session.verified) {
+        if (!req.session.verified) {
             res.redirect('/register');
         } else {
-            if(req.session.moderator) {
+            if (req.session.moderator) {
                 res.redirect('/moderate');
             } else {
                 Posts.findOne({ email: req.session.email }, function (err, post) {
                     if (!err) {
-                        Users.findOne({email: req.session.email}, function(err, user) {
-                            if(!err && user) {
-                                res.render('dashboard', { post: post, user: user});
+                        Users.findOne({ email: req.session.email }, function (err, user) {
+                            if (!err && user) {
+                                res.render('dashboard', { post: post, user: user });
                             } else {
-                                res.redirect('/');        
+                                res.redirect('/');
                             }
                         })
                     } else {
                         res.redirect('/');
                     }
                 })
-            }  
-        }             
+            }
+        }
     } else {
         res.redirect('/');
     }
@@ -64,7 +64,7 @@ router.get('/edit/:id', (req, res, next) => {
             } else {
                 res.redirect('/');
             }
-        })        
+        })
     } else {
         res.redirect('/');
     }
@@ -73,12 +73,12 @@ router.get('/edit/:id', (req, res, next) => {
 router.post('/assing-moderator', (req, res, next) => {
     if (req.session.email && req.session.moderator && req.session.admin) {
         Users.findOne({ email: req.body.email }, (err, user) => {
-            if(err || user == null) res.json({error: "Error occured. Try again."});
+            if (err || user == null) res.json({ error: "Error occured. Try again." });
             else {
                 user.moderator = true;
-                user.save((err)=>{
-                    if(err) console.log(err);
-                    else res.json({success: "Moderator permissions assigned"});
+                user.save((err) => {
+                    if (err) console.log(err);
+                    else res.json({ success: "Moderator permissions assigned" });
                 });
             }
         });
@@ -87,109 +87,66 @@ router.post('/assing-moderator', (req, res, next) => {
     }
 });
 
-router.post('/create-account', (req, res, next) => {
-    if (req.session.email && req.session.moderator) {
+router.post('/create-account', async function (req, res, next) {
 
-        Posts.findOne({ _id: req.body.id }, function (err, post) {
-            if (!err && post && post.status == 'published') {
-                
-                Users.findOne({email: post.email}, (err, user) => {
+    try {
+        if (!req.session.email || !req.session.moderator) throw new Error('Not authorized');
 
-                    if(!err && user && !user.created) {
-                        
-                        var password = steem.formatter.createSuggestedPassword();
-                        var publicKeys = steem.auth.generateKeys(user.account, password, ['owner', 'active', 'posting', 'memo']);
-                        let keys = steem.auth.getPrivateKeys(user.account, password);
+        let post = await Posts.findOne({ _id: req.body.id });
 
-                        user.steem_password = password;
-                        user.steem_keys = keys;
-                        user.save((err) => {
-                            if(!err) {
-                                console.log(user.steem_password, user.steem_keys);
-                                
-                                steem.api.getConfig(function(err, config) {
-                                    if(err){
-                                      throw new Error(err);
-                                    }
-                                  
-                                    steem.api.getChainProperties(function(err2, chainProps) {
-                                        if(err2){
-                                            console.log(err2, chainProps);
-                                            throw new Error(err2);
-                                        }
+        if (!post) throw new Error('Post not found');
+        if (post.status != 'published') throw new Error('Post not published');
 
-                                        var ratio = config['STEEM_CREATE_ACCOUNT_WITH_STEEM_MODIFIER'];
-                                        var fee = parseFloat(ratio * chainProps.account_creation_fee.replace(' STEEM',"")).toFixed(3);
-                                    
-                                        var feeString = fee + ' STEEM';
-                                        var jsonMetadata = '';
+        let user = await Users.findOne({ email: post.email });
 
-                                        var owner = {
-                                            weight_threshold: 1,
-                                            account_auths: [],
-                                            key_auths: [[publicKeys.owner, 1]]
-                                        };
-                                        var active = {
-                                            weight_threshold: 1,
-                                            account_auths: [],
-                                            key_auths: [[publicKeys.active, 1]]
-                                        };
-                                        var posting = {
-                                            weight_threshold: 1,
-                                            account_auths: [],
-                                            key_auths: [[publicKeys.posting, 1]]
-                                        };
-                                        var memoKey = publicKeys.memo;
-                                            
-                                        steem.broadcast.accountCreate(process.env.POSTING_KEY, feeString, process.env.STEEM_USERNAME, user.account, owner, active, posting, memoKey, jsonMetadata, function(err, result) {
-                                            console.log(err, result);
+        if (!user) throw new Error('User not found');
+        if (user.created) throw new Error('User already created');
 
-                                            if(!err && result) {
-                                                post.created = true;
-                                                post.save((err) => {
-                                                    if(!err) {
-                                                        user.created = true;
-                                                        user.save((err)=>{
-                                                            if (!err) {
-                                                                mailing.sendInformationAfterAccountCreated(user.email, (err, info) => {
-                                                                    console.log(err, info);
-                                                                    utils.commentAddAccountCreatedInfo(post, user, (err, response) => {
-                                                                        console.log(err, response);
-                                                                        res.json({success: "Account created"})
-                                                                    });
-                                                                });
-                                                            } else {
-                                                                res.json({error: "Error occured. Try again"})
-                                                            }
-                                                        }); 
-                                                    } else {
-                                                        res.json({error: "Error occured. Try again"})
-                                                    }
-                                                });
-                                            } else {
-                                                res.json({error: "Error occured. Try again"})
-                                            }                                            
-                                            
-                                        });
+        var password = steem.formatter.createSuggestedPassword();
+        var publicKeys = steem.auth.generateKeys(user.account, password, ['owner', 'active', 'posting', 'memo']);
+        let keys = steem.auth.getPrivateKeys(user.account, password);
 
-                                    })
-                                });
-                             
-                            } else {
-                                res.json({error: "Error occured. Try again"})
-                            }
-                        })
-                        
-                    } else {
-                        res.json({error: "Error occured. Try again"})        
-                    }
-                })
-            } else {
-                res.json({error: "Error occured. Try again"})
-            }
-        })        
-    } else {
-        res.json({error: "Error occured. Try again"})
+        await user.update({
+            steem_password: password,
+            steem_keys: keys
+        });
+
+        let chainProps = await steem.api.getChainPropertiesAsync();
+
+        var fee = chainProps.account_creation_fee;
+
+        var jsonMetadata = '';
+
+        var owner = {
+            weight_threshold: 1,
+            account_auths: [],
+            key_auths: [[publicKeys.owner, 1]]
+        };
+        var active = {
+            weight_threshold: 1,
+            account_auths: [],
+            key_auths: [[publicKeys.active, 1]]
+        };
+        var posting = {
+            weight_threshold: 1,
+            account_auths: [],
+            key_auths: [[publicKeys.posting, 1]]
+        };
+        var memoKey = publicKeys.memo;
+
+        await steem.broadcast.accountCreateAsync(process.env.POSTING_KEY, fee, process.env.STEEM_USERNAME, user.account, owner, active, posting, memoKey, jsonMetadata);
+
+        await post.update({ created: true});
+        await user.update({ created: true});
+
+        mailing.sendInformationAfterAccountCreated(user.email, (err, info) => {
+            utils.commentAddAccountCreatedInfo(post, user, (err, response) => {
+                res.json({ success: "Account created" })
+            });
+        });
+
+    } catch (error) {
+        res.json({ error: "Error occured. Try again" })
     }
 });
 
@@ -215,10 +172,10 @@ router.get('/moderate', (req, res, next) => {
 
 router.get('/register', (req, res) => {
     if (req.session.email) {
-        if(!req.session.verified) {
+        if (!req.session.verified) {
             res.render('register');
         } else {
-            res.redirect('/dashboard');    
+            res.redirect('/dashboard');
         }
     } else {
         res.redirect('/');
@@ -240,7 +197,7 @@ router.post('/register', (req, res) => {
                         console.log(err);
                         res.json({ error: "Something went wrong. Try again" });
                     } else {
-                        mailing.sendActivationEmail(user.email, user.token, function(err, info){
+                        mailing.sendActivationEmail(user.email, user.token, function (err, info) {
                             if (err) {
                                 console.log('Error: ' + err);
                                 res.json({ error: "Error occured. Try again" });
@@ -273,100 +230,100 @@ router.post('/finish', (req, res) => {
                     user.save((err) => {
                         if (!err) {
                             req.session.verified = true;
-                            res.json({success: 'Registration finished'});
+                            res.json({ success: 'Registration finished' });
                         } else {
                             console.log(err);
-                            res.json({error: 'Error occured. Try again'});
+                            res.json({ error: 'Error occured. Try again' });
                         }
                     })
                 });
             } else {
-                res.json({error: 'Error occured. Try again'});
+                res.json({ error: 'Error occured. Try again' });
             }
         })
     } else {
-        res.json({error: 'Error occured. Try again'});
+        res.json({ error: 'Error occured. Try again' });
     }
 });
 
 router.post('/check', (req, res) => {
-    if(req.body.account) {
+    if (req.body.account) {
         let error = steem.utils.validateAccountName(req.body.account);
-        if(error) {
-            res.json({error: error});
+        if (error) {
+            res.json({ error: error });
         } else {
-            steem.api.getAccounts([req.body.account], function(err, result) {
-                if(err || result.length) {
-                    res.json({error: "Account with that name already exists"});
+            steem.api.getAccounts([req.body.account], function (err, result) {
+                if (err || result.length) {
+                    res.json({ error: "Account with that name already exists" });
                 } else {
-                    res.json({success: "Account name is free"});
+                    res.json({ success: "Account name is free" });
                 }
             });
         }
     } else {
-        res.json({error: "Account name cannot be ampty"});
+        res.json({ error: "Account name cannot be ampty" });
     }
 })
 
 router.post('/reject', (req, res) => {
-    if(req.session.email && req.session.moderator  && req.body.id) {
-        if(req.body.reason) {
+    if (req.session.email && req.session.moderator && req.body.id) {
+        if (req.body.reason) {
             Posts.findOne({ _id: req.body.id }, function (err, post) {
                 if (!err && post && post.status == 'added') {
                     post.status = 'rejected';
-                    post.save((err)=>{
-                        if(!err) {
-                            mailing.sendRejectedInformation(post.email, req.body.reason, function(err) {
-                                if(!err) {
+                    post.save((err) => {
+                        if (!err) {
+                            mailing.sendRejectedInformation(post.email, req.body.reason, function (err) {
+                                if (!err) {
                                     console.log("Rejected email sent to author");
-                                    res.json({success: "Post rejected successfully"});
+                                    res.json({ success: "Post rejected successfully" });
                                 } else {
-                                    res.json({error: "Email not sent but post rejected"});
+                                    res.json({ error: "Email not sent but post rejected" });
                                 }
                             })
                         } else {
-                            res.json({error: "Error while saving database. Try again"});
+                            res.json({ error: "Error while saving database. Try again" });
                         }
                     })
                 } else {
-                    res.json({error: "Post doesn\'t exists or already rejected"});
+                    res.json({ error: "Post doesn\'t exists or already rejected" });
                 }
             });
         } else {
-            res.json({error: "Please provide rejecting reason"});
+            res.json({ error: "Please provide rejecting reason" });
         }
     } else {
-        res.json({error: "Not authorized"});
+        res.json({ error: "Not authorized" });
     }
 })
 
 router.post('/hide', (req, res) => {
-    if(req.session.email && req.session.moderator  && req.body.id) {
+    if (req.session.email && req.session.moderator && req.body.id) {
         Posts.findOne({ _id: req.body.id }, function (err, post) {
             if (!err && post && post.status == 'published') {
                 post.status = 'hidden';
-                post.save((err)=>{
-                    if(!err) {
-                        res.json({success: "Post hidden successfully"});
+                post.save((err) => {
+                    if (!err) {
+                        res.json({ success: "Post hidden successfully" });
                     } else {
-                        res.json({error: "Error while saving database. Try again"});
+                        res.json({ error: "Error while saving database. Try again" });
                     }
                 })
             } else {
-                res.json({error: "Post doesn\'t exists or already hidden"});
+                res.json({ error: "Post doesn\'t exists or already hidden" });
             }
         });
     } else {
-        res.json({error: "Not authorized"});
+        res.json({ error: "Not authorized" });
     }
 })
 
 router.post('/add', (req, res) => {
-    if(req.session.email) {
+    if (req.session.email) {
         if (req.body.title && req.body.title != '' && req.body.body && req.body.body != '' && req.body.tags && req.body.tags != '') {
             Posts.findOne({ email: req.session.email }, function (err, post) {
                 if (!err) {
-                    if(!post) {
+                    if (!post) {
                         post = new Posts();
                     }
 
@@ -377,17 +334,17 @@ router.post('/add', (req, res) => {
                     post.status = 'added';
 
                     let image = req.body.image;
-                    
-                    if ( ! image || (image == '')) {
+
+                    if (!image || (image == '')) {
                         var urls = getUrls(req.body.body);
                         urls.forEach((url) => {
-                            if ( ! image || (image == '')) {
+                            if (!image || (image == '')) {
                                 if (url[url.length - 1] == ')') {
                                     var trimmed = url.substring(0, url.length - 1);
                                 } else {
                                     var trimmed = url;
                                 }
-        
+
                                 if (isImage(trimmed)) {
                                     image = trimmed;
                                 }
@@ -396,14 +353,14 @@ router.post('/add', (req, res) => {
                     }
 
                     post.image = image;
-                    
-                    post.save((err)=>{
 
-                        Users.find({moderator: true}, (err, users) => {
-                            if(!err && users.length) {
-                                users.forEach((user)=>{
+                    post.save((err) => {
+
+                        Users.find({ moderator: true }, (err, users) => {
+                            if (!err && users.length) {
+                                users.forEach((user) => {
                                     mailing.moderatorInformAboutNewPost(user.email, (err) => {
-                                        if(!err) {
+                                        if (!err) {
                                             console.log('Mail sent to moderator');
                                         }
                                     });
@@ -415,7 +372,7 @@ router.post('/add', (req, res) => {
 
                         res.redirect('/dashboard');
                     })
-                    
+
                 } else {
                     res.redirect('/');
                 }
@@ -430,11 +387,11 @@ router.post('/add', (req, res) => {
 });
 
 router.post('/publish', (req, res) => {
-    if(req.session.email && req.session.moderator) {
+    if (req.session.email && req.session.moderator) {
         if (req.body.title && req.body.title != '' && req.body.body && req.body.body != '' && req.body.tags && req.body.tags != '' && req.body._id && req.body._id != '') {
             Posts.findById(req.body._id, function (err, post) {
                 if (!err) {
-                    if(post) {
+                    if (post) {
                         post.title = req.body.title;
                         post.body = req.body.body;
                         post.tags = req.body.tags;
@@ -443,17 +400,17 @@ router.post('/publish', (req, res) => {
                         post.created = false;
 
                         let image = req.body.image;
-                        
-                        if ( ! image || (image == '')) {
+
+                        if (!image || (image == '')) {
                             var urls = getUrls(req.body.body);
                             urls.forEach((url) => {
-                                if ( ! image || (image == '')) {
+                                if (!image || (image == '')) {
                                     if (url[url.length - 1] == ')') {
                                         var trimmed = url.substring(0, url.length - 1);
                                     } else {
                                         var trimmed = url;
                                     }
-            
+
                                     if (isImage(trimmed)) {
                                         image = trimmed;
                                     }
@@ -462,33 +419,33 @@ router.post('/publish', (req, res) => {
                         }
 
                         post.image = image;
-                        
+
                         post.permlink = getSlug(post.title) + '-' + new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
 
-                        utils.publishPostOnSteem(post, function(err, result) {
-                            if(!err) {
+                        utils.publishPostOnSteem(post, function (err, result) {
+                            if (!err) {
                                 post.save((err) => {
                                     mailing.sendInformationAfterPostPublished(post.email, 'https://steemit.com/@' + process.env.STEEM_USERNAME + '/' + post.permlink, (err, info) => {
                                         console.log(err, info)
-                                        res.json({success: 'Post has been published'});
+                                        res.json({ success: 'Post has been published' });
                                     });
                                 })
                             } else {
-                                res.json({error: 'Error while publishing on Steem. ' + err.message });
+                                res.json({ error: 'Error while publishing on Steem. ' + err.message });
                             }
                         });
                     } else {
-                        res.json({error: 'Post not found in database. Cannot be published'});
-                    }                    
+                        res.json({ error: 'Post not found in database. Cannot be published' });
+                    }
                 } else {
-                    res.json({error: 'Error while connecting database'});
+                    res.json({ error: 'Error while connecting database' });
                 }
             })
         } else {
-            res.json({error: 'Post information incomplete. Provide all fields'});
+            res.json({ error: 'Post information incomplete. Provide all fields' });
         }
     } else {
-        res.json({error: 'Not authorized'});
+        res.json({ error: 'Not authorized' });
     }
 
 });
@@ -502,19 +459,19 @@ router.post('/login', (req, res) => {
                     if (!err && result) {
                         req.session.email = user.email;
                         req.session.verified = user.verified;
-                        if(user.moderator) {
+                        if (user.moderator) {
                             req.session.moderator = true;
                         }
-                        if(user.admin) {
+                        if (user.admin) {
                             req.session.admin = true;
                         }
-                        res.json({success: 'Logged in successfully'});
+                        res.json({ success: 'Logged in successfully' });
                     } else {
-                        res.json({error: 'Invalid username or password'});
+                        res.json({ error: 'Invalid username or password' });
                     }
                 });
             } else {
-                res.json({error: 'Invalid username or password'});
+                res.json({ error: 'Invalid username or password' });
             }
         })
     }
@@ -552,10 +509,10 @@ router.get('/validate', (req, res) => {
 })
 
 router.post('/resend', (req, res) => {
-    if(req.body.email && req.body.email != '') {
-        Users.findOne({email: req.body.email}, function(err, user) {
-            if(!err && user) {
-                mailing.sendActivationEmail(user.email, user.token, function(err, info){
+    if (req.body.email && req.body.email != '') {
+        Users.findOne({ email: req.body.email }, function (err, user) {
+            if (!err && user) {
+                mailing.sendActivationEmail(user.email, user.token, function (err, info) {
                     if (err) {
                         console.log('Error: ' + err);
                         res.json({ error: "Error occured. Try again" });
