@@ -103,5 +103,6 @@
 	"User interests (readonly, you should decide which tags should be used):": "Zainteresowania użytkownika (do odczytu, ty powinieneś zdecydować jakich tagów użyć):",
 	"Steem tags for new post:": "Tagi STEEM dla nowego postu:",
 	"Moderator username (without @)": "Nazwa moderatora (bez znaku @)",
-	"Unfortunatelly your post has been rejected. If you think that was made by mistake - contact our moderators via Discord.": "Niestety twój post został odrzucony. Jeśli uważasz, że to pomyłka skonfaktuj się z naszymi moderatorami za pomocą Discorda."
+	"Unfortunatelly your post has been rejected. If you think that was made by mistake - contact our moderators via Discord.": "Niestety twój post został odrzucony. Jeśli uważasz, że to pomyłka skonfaktuj się z naszymi moderatorami za pomocą Discorda.",
+	"No posts to moderate at the moment": "Brak postów do moderacji"
 }
