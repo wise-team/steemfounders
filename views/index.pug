@@ -1,7 +1,7 @@
 extends website.pug
 
 block header
-  title #{__('Steemfounders')}
+  title #{__('Steemfounders - SteemSTEM')}
 
 append scripts
     script(src='/js/main.js')
@@ -27,9 +27,7 @@ block body
                     | #{__('Or use Steemit')}
                     i.fa.fa-long-arrow-right
             .col-md-6.text-right.hidden-sm.hidden-xs
-              img(src='/images/steemfounders.png', alt='Steemfounders by @fukako')
-              p #{__('by')}
-                a(href="https://steemit.com/@fukako")#fukako-link  @fukako
+              img(src='/images/steemgreenrocket.png', alt='SteemSTEM').steemstem-logo
 
     .pricing-table-area
       .container
