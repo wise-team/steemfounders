@@ -22,7 +22,7 @@
     "speakingurl": "latest",
     "dotenv": "latest",
     "express-dynamic-static": "latest",
-    "bcrypt": "latest",
+    "bcrypt": "5.0.0",
     "nodemailer": "latest",
     "nodemailer-mailgun-transport": "latest",
     "i18n": "latest"
