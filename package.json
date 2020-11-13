@@ -23,7 +23,7 @@
     "dotenv": "latest",
     "express-dynamic-static": "latest",
     "bcrypt": "latest",
-    "nodemailer": "latest",
+    "nodemailer": "6.4.16",
     "nodemailer-mailgun-transport": "latest",
     "i18n": "latest"
   },
