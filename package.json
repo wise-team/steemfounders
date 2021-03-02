@@ -11,7 +11,7 @@
     "express-sanitize-escape": "latest",
     "express-session": "latest",
     "morgan": "latest",
-    "pug": "latest",
+    "pug": "3.0.1",
     "serve-favicon": "latest",
     "steem": "latest",
     "moment": "latest",
