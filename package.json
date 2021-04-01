@@ -16,7 +16,7 @@
     "steem": "latest",
     "moment": "latest",
     "cron": "latest",
-    "mongoose": "latest",
+    "mongoose": "5.12.3",
     "get-urls": "latest",
     "is-image": "latest",
     "speakingurl": "latest",
