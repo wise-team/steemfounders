@@ -17,7 +17,7 @@
     "moment": "latest",
     "cron": "latest",
     "mongoose": "latest",
-    "get-urls": "latest",
+    "get-urls": "9.0.0",
     "is-image": "latest",
     "speakingurl": "latest",
     "dotenv": "latest",
